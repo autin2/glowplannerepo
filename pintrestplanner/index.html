@@ -4,168 +4,55 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>GlowPlanner</title>
-  <meta name="description" content="Printable planners that are actually pretty and practical."/>
+  <meta name="description" content="Pretty, practical planners.">
   <style>
     :root{
       --bg:#0f1223; --text:#f7f8ff; --muted:#c9cbe8;
       --card:rgba(255,255,255,.05); --line:rgba(255,255,255,.12);
-      --primary:#ff7ac8; --secondary:#9ad8ff; --radius:16px; --max:1100px;
+      --primary:#ff7ac8; --secondary:#9ad8ff; --radius:16px; --max:980px;
     }
     *{box-sizing:border-box}
     body{margin:0;background:
-      radial-gradient(1200px 800px at 10% -10%,rgba(255,122,200,.22),transparent 60%),
-      radial-gradient(1200px 800px at 110% 10%,rgba(154,216,255,.18),transparent 60%),
+      radial-gradient(1000px 700px at 10% -10%,rgba(255,122,200,.20),transparent 60%),
+      radial-gradient(1000px 700px at 110% 10%,rgba(154,216,255,.16),transparent 60%),
       #0f1223;color:var(--text);font:16px/1.5 ui-sans-serif,Inter,system-ui}
     .container{max-width:var(--max);margin:0 auto;padding:0 18px}
     header{position:sticky;top:0;background:rgba(15,18,35,.7);backdrop-filter:blur(8px);
       border-bottom:1px solid rgba(255,255,255,.08)}
     .nav{display:flex;align-items:center;justify-content:space-between;height:64px}
     .brand{font-weight:900;letter-spacing:.3px}
+    section{padding:36px 0}
     .btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 16px;
       border-radius:999px;font-weight:800;text-decoration:none;color:#111;background:
       linear-gradient(135deg,var(--primary),#ff66a8)}
-    .btn.outline{background:transparent;border:1px solid rgba(255,255,255,.18);color:var(--text)}
-    .btn.secondary{background:linear-gradient(135deg,var(--secondary),#6cc9ff)}
-    h1,h2{margin:0 0 8px}
-    .muted{color:var(--muted)}
-    section{padding:28px 0}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
-    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-    .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-    .thumb{background:#fff;border-radius:12px;aspect-ratio:5/7;position:relative;box-shadow:0 8px 22px rgba(0,0,0,.25)}
-    .tag{position:absolute;top:8px;left:8px;background:#111;color:#fff;font-size:12px;padding:6px 8px;border-radius:999px}
-    .price{position:relative}
-    .ribbon{position:absolute;top:10px;right:10px;background:linear-gradient(135deg,var(--primary),#ff66a8);
-      color:#111;font-weight:900;padding:6px 10px;border-radius:999px;font-size:12px}
-    .p-num{font-size:32px;font-weight:900}
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,.2);color:var(--text)}
     .cta-band{background:
       radial-gradient(400px 170px at 15% 40%, rgba(255,122,200,.25), transparent 60%),
       radial-gradient(400px 170px at 85% 60%, rgba(154,216,255,.25), transparent 60%),
       linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-      border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:18px}
+      border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:22px}
     .row{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
-    details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
-    summary{cursor:pointer;font-weight:900}
+    h3{margin:0}
     footer{padding:22px 0;color:var(--muted);border-top:1px solid rgba(255,255,255,.08)}
-    @media (max-width:900px){
-      .grid-4{grid-template-columns:repeat(2,1fr)}
-      .grid-3{grid-template-columns:1fr}
-      .grid-2{grid-template-columns:1fr}
-    }
   </style>
 </head>
 <body>
   <header>
     <div class="container nav">
       <div class="brand">GlowPlanner</div>
-      <div style="display:flex;gap:10px">
-        <a class="btn outline" href="#pricing">Pricing</a>
-        <button class="btn secondary" id="btnTest">Download Test</button>
-      </div>
+      <button class="btn ghost" id="btnTest">Download Test</button>
     </div>
   </header>
 
   <main>
-    <!-- Templates -->
-    <section id="templates">
-      <div class="container">
-        <h2>Popular templates</h2>
-        <p class="muted">All templates are printable & export-ready. Customize sections and headings in seconds.</p>
-        <div class="grid-4">
-          <div class="thumb"><span class="tag">Meal Plan</span></div>
-          <div class="thumb"><span class="tag">Fitness</span></div>
-          <div class="thumb"><span class="tag">Budget</span></div>
-          <div class="thumb"><span class="tag">Self-Care</span></div>
-          <div class="thumb"><span class="tag">Daily Planner</span></div>
-          <div class="thumb"><span class="tag">Weekly Reset</span></div>
-          <div class="thumb"><span class="tag">Cleaning</span></div>
-          <div class="thumb"><span class="tag">Habit Tracker</span></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- How it works -->
-    <section id="how">
-      <div class="container grid-3">
-        <div class="card"><h3>1) Pick a base</h3><p class="muted">Choose a template + colorway.</p></div>
-        <div class="card"><h3>2) Personalize</h3><p class="muted">Add sections (meals, macros, savings, skincare), drag to reorder.</p></div>
-        <div class="card"><h3>3) Export & print</h3><p class="muted">One-click PDF/PNG export at 300 DPI. Print at home or share to Pinterest.</p></div>
-      </div>
-    </section>
-
-    <!-- Freebie -->
-    <section id="free">
-      <div class="container cta-band">
-        <div class="row">
-          <div>
-            <h3 style="margin:0 0 6px">Free: 7-Day Glow-Up printable</h3>
-            <p class="muted" style="margin:0">A mini routine for meals • movement • self-care • wins. Instant download.</p>
-          </div>
-          <div style="display:flex;gap:10px">
-            <button class="btn" id="btnDownload">Download PDF</button>
-            <a class="btn outline" href="#pricing">Unlock all templates</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Social proof -->
-    <section id="quotes">
-      <div class="container grid-3">
-        <div class="card">“Printed the Meal Plan + Budget set. It’s the first time I’ve stuck to both for 3 weeks.”<br><b>— Maya R.</b></div>
-        <div class="card">“The layouts are clean, not cluttered. Love the neutral + blush themes.”<br><b>— Evelyn T.</b></div>
-        <div class="card">“Exported to Pinterest and it actually got saves?? Instant content.”<br><b>— Kirsten L.</b></div>
-      </div>
-    </section>
-
-    <!-- Pricing -->
-    <section id="pricing">
-      <div class="container grid-2">
-        <div class="card price">
-          <h3>Free</h3>
-          <div class="p-num">$0</div>
-          <ul>
-            <li>7-Day Glow-Up printable</li>
-            <li>2 starter templates</li>
-            <li>Basic colors</li>
-          </ul>
-          <div style="margin-top:10px"><a class="btn outline" href="#free">Start free</a></div>
-        </div>
-        <div class="card price">
-          <div class="ribbon">Most Popular</div>
-          <h3>Pro</h3>
-          <div class="p-num">$7<span style="font-size:14px">/mo</span></div>
-          <ul>
-            <li>All templates + new drops</li>
-            <li>Unlimited exports (PDF/PNG, 300 DPI)</li>
-            <li>Theme packs: Blush • Neutral • Sky • Lilac</li>
-            <li>Priority requests & support</li>
-          </ul>
-          <div style="margin-top:10px"><a class="btn" href="#">Go Pro</a></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- FAQ -->
-    <section id="faq">
-      <div class="container grid-2">
-        <details><summary>Can I use this with Pinterest?</summary><p class="muted">Yes. Export PNG at 1000×1500 or 1200×1800 and post as an Idea Pin or standard pin.</p></details>
-        <details><summary>Will it work for A4 / Letter?</summary><p class="muted">Yes—Letter by default; add A4 in export.</p></details>
-        <details><summary>Is there a free trial?</summary><p class="muted">Free sample anytime. Cancel Pro anytime.</p></details>
-        <details><summary>Do I need design skills?</summary><p class="muted">No. Templates are pre-styled; you just toggle sections and rename headings.</p></details>
-      </div>
-    </section>
-
-    <!-- Final CTA -->
+    <!-- Final CTA only -->
     <section id="final">
       <div class="container">
         <div class="cta-band">
           <div class="row">
-            <h3 style="margin:0">Ready to make routines stick?</h3>
-            <div>
-              <a class="btn" href="#pricing">Get Pro for $7/mo</a>
-              <a class="btn outline" href="#free">Try free first</a>
+            <h3>Ready to make routines stick?</h3>
+            <div style="display:flex;gap:10px">
+              <button class="btn" id="btnDownload">Download Test PDF</button>
             </div>
           </div>
         </div>
@@ -183,7 +70,7 @@
   <script>
     document.getElementById('y').textContent = new Date().getFullYear();
 
-    // Reusable download helper (streams from /api/glowup-pdf)
+    // Simple downloader that hits your Vercel function
     async function downloadPDF(endpoint = '/api/glowup-pdf', filename = '7-day-glow-up.pdf'){
       try{
         const res = await fetch(endpoint);
@@ -193,11 +80,10 @@
         const a = Object.assign(document.createElement('a'), { href:url, download: filename });
         document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
       }catch(err){
-        alert('Download failed. Make sure your Vercel function at '+endpoint+' is deployed.\n\n'+err);
+        alert('Download failed. Ensure /api/glowup-pdf is deployed on Vercel.\n\n'+err);
       }
     }
 
-    // Buttons
     document.getElementById('btnDownload').addEventListener('click', () => downloadPDF());
     document.getElementById('btnTest').addEventListener('click', () => downloadPDF('/api/glowup-pdf', 'test-glow-up.pdf'));
   </script>
