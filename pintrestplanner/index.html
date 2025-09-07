@@ -7,57 +7,6 @@
   <meta name="description" content="Design gorgeous, hyper-practical planners in seconds. Grab the free 7-Day Glow-Up printable, then unlock unlimited templates, themes, and exports."/>
   <link rel="canonical" href="https://example.com/"/>
   <link rel="stylesheet" href="style.css"/>
-  <style>
-    /* === MOCK PREVIEW STYLES === */
-    .mock{
-      position: relative;
-      width: 100%;
-      max-width: 420px;
-      aspect-ratio: 3 / 4.4;
-      display: grid;
-      place-items: center;
-      overflow: visible;
-      margin-inline: auto;
-    }
-    .mock-viewport{
-      position: relative;
-      width: 100%;
-      height: 100%;
-      border-radius: 24px;
-      overflow: hidden;
-      background: #fff;
-      box-shadow:
-        0 18px 40px rgba(15,18,35,.35),
-        0 2px 0 rgba(0,0,0,.06) inset;
-    }
-    .mock-img{
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      object-position: center top;
-      display: block;
-      transform: translateY(2px);
-    }
-    .mock .sticker{
-      position: absolute;
-      top: -8px;
-      right: 12px;
-      z-index: 3;
-      padding: 8px 14px;
-      border-radius: 999px;
-      background: linear-gradient(135deg,#ff7ac8,#ff66a8);
-      color: #fff;
-      font-weight: 800;
-      font-size: 12px;
-      letter-spacing: .2px;
-      transform: rotate(6deg);
-      box-shadow: 0 10px 22px rgba(0,0,0,.22), 0 1px 0 rgba(255,255,255,.6) inset;
-      pointer-events: none;
-    }
-    @media (min-width: 1100px){
-      .mock{ max-width: 520px; }
-    }
-  </style>
 </head>
 <body>
   <header class="nav">
@@ -67,6 +16,7 @@
         <span>GlowPlanner</span>
       </div>
       <div class="nav-cta">
+        <!-- Download Test uses a relative path to /public/pdfs/... -->
         <button class="btn secondary" id="btnTest">Download Test</button>
       </div>
     </div>
@@ -98,16 +48,18 @@
           </div>
         </div>
 
-        <!-- MOCK -->
+        <!-- MOCK: uses your exported PNG inside the hero -->
         <div class="mock" aria-label="Planner preview mockup">
           <div class="sticker">FREE SAMPLE</div>
-          <div class="mock-viewport">
-            <img
-              class="mock-img"
-              src="/img/mock-glowplanner-v4.png"
-              alt="GlowPlanner 7-Day Glow-Up printable preview"
-            />
-          </div>
+          <img
+            class="mock-img"
+            src="/img/mock-glowplanner-v4.png"
+            alt="GlowPlanner 7-Day Glow-Up printable preview"
+            width="1000"
+            height="1400"
+            decoding="async"
+            loading="eager"
+          />
         </div>
       </div>
     </section>
@@ -158,15 +110,17 @@
   <script>
     document.getElementById('y').textContent = new Date().getFullYear();
 
+    // Simple download that works on localhost, Vercel preview, and custom domain
     function downloadPDF(filename = 'glowplanner-fillable.pdf') {
       const a = document.createElement('a');
-      a.href = '/pdfs/' + filename;   // file must live in /public/pdfs/
+      a.href = '/pdfs/' + filename;   // served from /public/pdfs/...
       a.download = filename;
       document.body.appendChild(a);
       a.click();
       a.remove();
     }
 
+    // Bind buttons
     document.getElementById('btnTest').addEventListener('click', () => downloadPDF());
     document.getElementById('btnDownload').addEventListener('click', () => downloadPDF());
     document.getElementById('btnDownload2').addEventListener('click', () => downloadPDF());
