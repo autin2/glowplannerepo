@@ -3,60 +3,22 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>GlowPlanner</title>
-  <meta name="description" content="Pretty, practical planners without the overwhelm."/>
-  <style>
-    :root{
-      --bg:#0f1223; --text:#f7f8ff; --muted:#c9cbe8;
-      --card:rgba(255,255,255,.05); --line:rgba(255,255,255,.12);
-      --primary:#ff7ac8; --secondary:#9ad8ff; --radius:16px; --max:1100px;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0; color:var(--text); font:16px/1.5 ui-sans-serif,Inter,system-ui;
-      background:
-        radial-gradient(1200px 800px at 10% -10%,rgba(255,122,200,.22),transparent 60%),
-        radial-gradient(1200px 800px at 110% 10%,rgba(154,216,255,.18),transparent 60%),
-        #0f1223;
-    }
-    .container{max-width:var(--max); margin:0 auto; padding:0 18px}
-    header{
-      position:sticky; top:0; z-index:40;
-      background:rgba(15,18,35,.7); backdrop-filter:blur(8px);
-      border-bottom:1px solid rgba(255,255,255,.08)
-    }
-    .nav{display:flex; align-items:center; justify-content:space-between; height:64px}
-    .brand{font-weight:900; letter-spacing:.3px}
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center; gap:.5rem;
-      padding:12px 16px; border-radius:999px; font-weight:800; text-decoration:none;
-      color:#111; background:linear-gradient(135deg,var(--primary),#ff66a8)
-    }
-    .btn.secondary{background:linear-gradient(135deg,var(--secondary),#6cc9ff); color:#0f172a}
-    .btn.ghost{background:transparent; border:1px solid rgba(255,255,255,.2); color:var(--text)}
-    h1{margin:0 0 10px; font-size:clamp(28px,6vw,52px); line-height:1.05}
-    p.lead{margin:0; color:var(--muted); font-size:clamp(16px,2.6vw,20px)}
-    .hero{padding:48px 0}
-    .hero-actions{display:flex; gap:10px; margin-top:16px; flex-wrap:wrap}
-    section{padding:34px 0}
-    .cta-band{
-      background:
-        radial-gradient(400px 170px at 15% 40%, rgba(255,122,200,.25), transparent 60%),
-        radial-gradient(400px 170px at 85% 60%, rgba(154,216,255,.25), transparent 60%),
-        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:var(--radius); padding:22px
-    }
-    .row{display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap}
-    footer{padding:22px 0; color:var(--muted); border-top:1px solid rgba(255,255,255,.08)}
-  </style>
+  <title>GlowPlanner — Aesthetic Printable Planners You’ll Actually Use</title>
+  <meta name="description" content="Design gorgeous, hyper-practical planners in seconds. Grab the free 7-Day Glow-Up printable, then unlock unlimited templates, themes, and exports."/>
+  <link rel="canonical" href="https://example.com/"/>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-  <header>
-    <div class="container nav">
-      <div class="brand">GlowPlanner</div>
-      <div style="display:flex; gap:10px">
-        <button class="btn ghost" id="btnTest">Download Test</button>
+  <header class="nav">
+    <div class="container nav-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <span>GlowPlanner</span>
+      </div>
+      <!-- Removed nav links to deleted sections -->
+      <div class="nav-cta">
+        <!-- Download test button for your Vercel API -->
+        <button class="btn secondary" id="btnTest">Download Test</button>
       </div>
     </div>
   </header>
@@ -64,24 +26,83 @@
   <main>
     <!-- HERO (kept) -->
     <section class="hero">
-      <div class="container">
-        <h1>Design gorgeous planners in seconds.</h1>
-        <p class="lead">Create meal, fitness, budgeting, and self-care planners that look good and actually get used.</p>
-        <div class="hero-actions">
-          <button class="btn secondary" id="btnDownload">Download Test PDF</button>
+      <div class="container hero-grid">
+        <div>
+          <span class="badge">Pinterest-ready printables</span>
+          <h1>Design gorgeous planners in seconds.<br/>Stay consistent without the overwhelm.</h1>
+          <p>Create meal, fitness, budgeting, and self-care planners that feel like stationery you’d actually buy. Start with a free 7-Day Glow-Up printable, then unlock unlimited templates with Pro.</p>
+          <div class="actions">
+            <!-- Optional extra test button in hero -->
+            <button class="btn" id="btnDownload">Download Test PDF</button>
+          </div>
+          <div class="trust">
+            <div class="avatars" aria-hidden="true">
+              <div class="avatar" style="background-image:linear-gradient(#fce,#ffa)"></div>
+              <div class="avatar" style="background-image:linear-gradient(#ccf,#cfc)"></div>
+              <div class="avatar" style="background-image:linear-gradient(#ddd,#fff)"></div>
+              <div class="avatar" style="background-image:linear-gradient(#eef,#cff)"></div>
+            </div>
+            <div class="kpis">
+              <span class="k">12k+ downloads</span>
+              <span class="k">4.9★ avg rating</span>
+              <span class="k">No design skills needed</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mock" aria-label="Planner preview mockup">
+          <div class="sticker">FREE SAMPLE</div>
+          <div class="sheet">
+            <h3>7-Day Glow-Up</h3>
+            <div class="grid">
+              <div>
+                <div class="line" style="width:85%"></div>
+                <div class="line" style="width:70%; margin-top:8px"></div>
+                <div class="line" style="width:60%; margin-top:8px"></div>
+              </div>
+              <div>
+                <div class="line" style="width:90%"></div>
+                <div class="line" style="width:72%; margin-top:8px"></div>
+                <div class="line" style="width:66%; margin-top:8px"></div>
+              </div>
+            </div>
+            <div class="line" style="height:14px; width:60%"></div>
+          </div>
+          <div class="sparkle" aria-hidden="true"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VALUE CARDS (kept) -->
+    <section class="section">
+      <div class="container cards">
+        <div class="card">
+          <div class="ic" aria-hidden="true"></div>
+          <h4>Done in minutes</h4>
+          <p>Pick a template, tweak sections (meals, workouts, budget), export PDF or PNG. No Canva chaos.</p>
+        </div>
+        <div class="card">
+          <div class="ic" aria-hidden="true" style="background:linear-gradient(135deg,var(--primary),var(--accent))"></div>
+          <h4>Aesthetic & functional</h4>
+          <p>Clean typography and soft colorways designed to look gorgeous on paper and Pinterest.</p>
+        </div>
+        <div class="card">
+          <div class="ic" aria-hidden="true" style="background:linear-gradient(135deg,var(--accent),var(--primary-2))"></div>
+          <h4>Routines that stick</h4>
+          <p>Habit loops, progress bars, and weekly reviews help you stay consistent (and motivated).</p>
         </div>
       </div>
     </section>
 
     <!-- FINAL CTA (kept) -->
-    <section id="final">
+    <section class="section">
       <div class="container">
         <div class="cta-band">
           <div class="row">
-            <h3 style="margin:0">Ready to make routines stick?</h3>
+            <h3 class="tight">Ready to make routines stick?</h3>
             <div>
-              <a class="btn" href="#!" id="btnDownload2">Download Test PDF</a>
-              <a class="btn ghost" href="#!">Try free first</a>
+              <!-- You can wire this to Stripe later; test stays for API -->
+              <button class="btn ghost" id="btnDownload2">Download Test PDF</button>
             </div>
           </div>
         </div>
@@ -90,16 +111,16 @@
   </main>
 
   <footer>
-    <div class="container" style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap">
-      <div class="brand">GlowPlanner</div>
-      <div class="muted">© <span id="y"></span></div>
+    <div class="container foot">
+      <div class="brand"><div class="logo"></div><span>GlowPlanner</span></div>
+      <div class="fine">© <span id="y"></span> GlowPlanner. Pretty planners, practical habits.</div>
     </div>
   </footer>
 
   <script>
     document.getElementById('y').textContent = new Date().getFullYear();
 
-    // Stream a PDF from your Vercel function (same-origin): /api/glowup-pdf
+    // Helper to download from your Vercel function
     async function downloadPDF(endpoint = '/api/glowup-pdf', filename = '7-day-glow-up.pdf'){
       try{
         const res = await fetch(endpoint);
@@ -113,10 +134,10 @@
       }
     }
 
-    const hook = (id, name) => document.getElementById(id)?.addEventListener('click', () => downloadPDF('/api/glowup-pdf', name));
-    hook('btnTest', 'test-glow-up.pdf');
-    hook('btnDownload', '7-day-glow-up.pdf');
-    hook('btnDownload2', '7-day-glow-up.pdf');
+    // Bind test buttons
+    document.getElementById('btnTest').addEventListener('click', () => downloadPDF('/api/glowup-pdf', 'test-glow-up.pdf'));
+    document.getElementById('btnDownload').addEventListener('click', () => downloadPDF('/api/glowup-pdf', '7-day-glow-up.pdf'));
+    document.getElementById('btnDownload2').addEventListener('click', () => downloadPDF('/api/glowup-pdf', '7-day-glow-up.pdf'));
   </script>
 </body>
 </html>
