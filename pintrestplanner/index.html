@@ -15,16 +15,15 @@
         <div class="logo" aria-hidden="true"></div>
         <span>GlowPlanner</span>
       </div>
-      <!-- Removed nav links to deleted sections -->
       <div class="nav-cta">
-        <!-- Download test button for your Vercel API -->
+        <!-- Download test button -->
         <button class="btn secondary" id="btnTest">Download Test</button>
       </div>
     </div>
   </header>
 
   <main>
-    <!-- HERO (kept) -->
+    <!-- HERO -->
     <section class="hero">
       <div class="container hero-grid">
         <div>
@@ -32,7 +31,6 @@
           <h1>Design gorgeous planners in seconds.<br/>Stay consistent without the overwhelm.</h1>
           <p>Create meal, fitness, budgeting, and self-care planners that feel like stationery you’d actually buy. Start with a free 7-Day Glow-Up printable, then unlock unlimited templates with Pro.</p>
           <div class="actions">
-            <!-- Optional extra test button in hero -->
             <button class="btn" id="btnDownload">Download Test PDF</button>
           </div>
           <div class="trust">
@@ -73,7 +71,7 @@
       </div>
     </section>
 
-    <!-- VALUE CARDS (kept) -->
+    <!-- VALUE CARDS -->
     <section class="section">
       <div class="container cards">
         <div class="card">
@@ -94,14 +92,13 @@
       </div>
     </section>
 
-    <!-- FINAL CTA (kept) -->
+    <!-- FINAL CTA -->
     <section class="section">
       <div class="container">
         <div class="cta-band">
           <div class="row">
             <h3 class="tight">Ready to make routines stick?</h3>
             <div>
-              <!-- You can wire this to Stripe later; test stays for API -->
               <button class="btn ghost" id="btnDownload2">Download Test PDF</button>
             </div>
           </div>
@@ -120,24 +117,19 @@
   <script>
     document.getElementById('y').textContent = new Date().getFullYear();
 
-    // Helper to download from your Vercel function
-    async function downloadPDF(endpoint = '/api/glowup-pdf', filename = '7-day-glow-up.pdf'){
-      try{
-        const res = await fetch(endpoint);
-        if(!res.ok) throw new Error('HTTP '+res.status);
-        const blob = await res.blob();
-        const url = URL.createObjectURL(blob);
-        const a = Object.assign(document.createElement('a'), { href:url, download: filename });
-        document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-      }catch(err){
-        alert('Download failed. Ensure /api/glowup-pdf is deployed on Vercel.\n\n'+err);
-      }
+    function downloadPDF(filename = 'glowplanner-fillable.pdf') {
+      const a = document.createElement('a');
+      a.href = '/pdfs/' + filename;   // points to public/pdfs folder
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
     }
 
     // Bind test buttons
-    document.getElementById('btnTest').addEventListener('click', () => downloadPDF('/api/glowup-pdf', 'test-glow-up.pdf'));
-    document.getElementById('btnDownload').addEventListener('click', () => downloadPDF('/api/glowup-pdf', '7-day-glow-up.pdf'));
-    document.getElementById('btnDownload2').addEventListener('click', () => downloadPDF('/api/glowup-pdf', '7-day-glow-up.pdf'));
+    document.getElementById('btnTest').addEventListener('click', () => downloadPDF());
+    document.getElementById('btnDownload').addEventListener('click', () => downloadPDF());
+    document.getElementById('btnDownload2').addEventListener('click', () => downloadPDF());
   </script>
 </body>
 </html>
