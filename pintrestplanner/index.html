@@ -7,6 +7,48 @@
   <meta name="description" content="Design gorgeous, hyper-practical planners in seconds. Grab the free 7-Day Glow-Up printable, then unlock unlimited templates, themes, and exports."/>
   <link rel="canonical" href="https://example.com/"/>
   <link rel="stylesheet" href="style.css"/>
+
+  <!-- Minimal modal styles (scoped) -->
+  <style>
+    .btn.ghost { background: transparent; border: 1px solid var(--border, #2a2f3f); color: #eaeefe }
+    .btn.primary { background: var(--primary, #6c7bff); color: #fff }
+    /* Modal shell */
+    .modal {
+      position: fixed; inset: 0; z-index: 80; display: none;
+    }
+    .modal.open { display: grid; place-items: center; }
+    .modal-backdrop {
+      position: absolute; inset: 0; background: rgba(10,12,22,.6); backdrop-filter: blur(4px);
+    }
+    .modal-panel {
+      position: relative; z-index: 1; width: min(92vw, 420px);
+      border-radius: 16px; background: #0f1222; color: #f4f6ff;
+      box-shadow: 0 30px 80px rgba(0,0,0,.45);
+      border: 1px solid rgba(255,255,255,.06);
+      padding: 24px;
+      animation: pop .14s ease-out;
+    }
+    @keyframes pop { from { transform: translateY(6px) scale(.98); opacity: .6 } to { transform:none; opacity:1 } }
+    .modal-head { display:flex; align-items:center; justify-content:space-between; margin-bottom: 16px; }
+    .modal-head .brand { display:flex; align-items:center; gap:10px; font-weight:800; }
+    .xbtn { background: transparent; border: 0; color: #cfd3ff; font-size: 18px; cursor: pointer; padding: 6px 8px; border-radius: 8px }
+    .xbtn:hover { background: rgba(255,255,255,.06) }
+    .field { display:flex; flex-direction:column; gap:8px; margin: 12px 0 }
+    .field label { font-size: 12px; color: #b8bde6; }
+    .field input {
+      background: #0b0e1a; border: 1px solid rgba(255,255,255,.08); color: #f4f6ff;
+      padding: 12px 12px; border-radius: 10px; outline: none;
+    }
+    .field input:focus { border-color: #7e8bff; box-shadow: 0 0 0 3px rgba(126,139,255,.2) }
+    .row { display:flex; gap:10px; align-items:center; }
+    .hr { height:1px; background: rgba(255,255,255,.08); margin: 14px 0 }
+    .muted { color:#aeb3d7; font-size:12px }
+    .brand-pill { background: linear-gradient(135deg,#ff7ac8,#ff66a8); color:#111; font-weight:900; font-size: 10px; padding: 4px 8px; border-radius:999px }
+    .oauth { width:100%; border-radius:10px; border:1px solid rgba(255,255,255,.12); background:#0b0f1d; color:#e9ecff; padding:11px 12px; cursor:pointer }
+    .oauth:hover { background:#0e1326 }
+    .legal { font-size: 11px; color:#9aa0c7; margin-top:8px }
+    .legal a { color:#cbd1ff; text-decoration: underline }
+  </style>
 </head>
 <body>
   <header class="nav">
@@ -16,8 +58,8 @@
         <span>GlowPlanner</span>
       </div>
       <div class="nav-cta">
-        <!-- Download Test uses a relative path to /public/pdfs/... -->
-        <button class="btn secondary" id="btnTest">Download Test</button>
+        <!-- Replaced "Download Test" with Sign In -->
+        <button class="btn ghost" id="btnSignIn">Sign In</button>
       </div>
     </div>
   </header>
@@ -48,17 +90,14 @@
           </div>
         </div>
 
-        <!-- MOCK: uses your exported PNG inside the hero -->
+        <!-- MOCK -->
         <div class="mock" aria-label="Planner preview mockup">
           <div class="sticker">FREE SAMPLE</div>
           <img
             class="mock-img"
             src="/img/mock-glowplanner-v4.png"
             alt="GlowPlanner 7-Day Glow-Up printable preview"
-            width="1000"
-            height="1400"
-            decoding="async"
-            loading="eager"
+            width="1000" height="1400" decoding="async" loading="eager"
           />
         </div>
       </div>
@@ -107,23 +146,107 @@
     </div>
   </footer>
 
+  <!-- LOGIN MODAL (frontend only) -->
+  <div class="modal" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginTitle" aria-hidden="true">
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-panel" tabindex="-1">
+      <div class="modal-head">
+        <div class="brand">
+          <span class="brand-pill">GlowPlanner</span>
+          <span id="loginTitle">Sign in</span>
+        </div>
+        <button class="xbtn" title="Close" data-close aria-label="Close">✕</button>
+      </div>
+
+      <form id="loginForm" onsubmit="event.preventDefault(); /* hook backend later */">
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required/>
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" placeholder="••••••••" required/>
+        </div>
+
+        <div class="row" style="justify-content: space-between; margin: 6px 0 14px">
+          <label class="row" style="gap:8px; font-size:12px; color:#b8bde6">
+            <input type="checkbox" id="remember" style="accent-color:#7e8bff"/> Remember me
+          </label>
+          <a href="#" class="muted">Forgot?</a>
+        </div>
+
+        <button class="btn primary" style="width:100%">Continue</button>
+
+        <div class="hr"></div>
+        <button type="button" class="oauth" id="btnGoogle">Continue with Google</button>
+        <button type="button" class="oauth" style="margin-top:8px">Continue with Apple</button>
+
+        <p class="legal">By continuing, you agree to our <a href="#">Terms</a> and <a href="#">Privacy</a>.</p>
+      </form>
+    </div>
+  </div>
+
   <script>
+    // Year footer
     document.getElementById('y').textContent = new Date().getFullYear();
 
-    // Simple download that works on localhost, Vercel preview, and custom domain
+    // Download buttons (unchanged)
     function downloadPDF(filename = 'glowplanner-fillable.pdf') {
       const a = document.createElement('a');
-      a.href = '/pdfs/' + filename;   // served from /public/pdfs/...
+      a.href = '/pdfs/' + filename;
       a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
+      document.body.appendChild(a); a.click(); a.remove();
     }
-
-    // Bind buttons
-    document.getElementById('btnTest').addEventListener('click', () => downloadPDF());
     document.getElementById('btnDownload').addEventListener('click', () => downloadPDF());
     document.getElementById('btnDownload2').addEventListener('click', () => downloadPDF());
+
+    // ===== Login modal (frontend only) =====
+    const modal = document.getElementById('loginModal');
+    const panel = modal.querySelector('.modal-panel');
+    const openBtn = document.getElementById('btnSignIn');
+    const closeEls = modal.querySelectorAll('[data-close]');
+    let lastFocus = null;
+
+    function openModal(){
+      lastFocus = document.activeElement;
+      modal.classList.add('open');
+      modal.removeAttribute('aria-hidden');
+      // focus first field
+      const firstInput = document.getElementById('email');
+      setTimeout(() => firstInput.focus(), 0);
+      trapFocus(true);
+    }
+    function closeModal(){
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden','true');
+      trapFocus(false);
+      if(lastFocus) lastFocus.focus();
+    }
+    openBtn.addEventListener('click', openModal);
+    closeEls.forEach(el => el.addEventListener('click', closeModal));
+    modal.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape') closeModal();
+    });
+    // click backdrop
+    modal.querySelector('.modal-backdrop').addEventListener('click', closeModal);
+
+    // Simple focus trap
+    function trapFocus(active){
+      if(!active) { document.removeEventListener('focus', focusGuard, true); return; }
+      document.addEventListener('focus', focusGuard, true);
+    }
+    function focusGuard(e){
+      if(!modal.classList.contains('open')) return;
+      if(!panel.contains(e.target)){
+        e.stopPropagation();
+        panel.focus();
+      }
+    }
+
+    // Fake Google click (for now)
+    document.getElementById('btnGoogle').addEventListener('click', () => {
+      alert('Google Sign-In will go here (frontend only for now).');
+    });
   </script>
 </body>
 </html>
