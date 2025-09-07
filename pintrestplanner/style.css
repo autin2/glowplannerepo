@@ -65,11 +65,42 @@ header.nav{
 .hero .actions{display:flex; gap:12px; margin-top:18px; flex-wrap:wrap}
 
 /* Mock preview */
-.mock{
-  background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-  border:1px solid rgba(255,255,255,.08); border-radius:var(--radius); box-shadow:var(--shadow);
-  padding:18px; position:relative; overflow:hidden
+.mock {
+  position: relative;
+  width: 100%;              /* container width controlled by grid/parent */
+  max-width: 420px;         /* fixed max size for hero */
+  aspect-ratio: 3/5;        /* keeps tall planner proportion */
+  border-radius: 20px;
+  overflow: hidden;
+  background: #fff;         /* fallback background */
+  box-shadow: 0 18px 40px rgba(15,18,35,.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+.mock .sticker {
+  position: absolute;
+  top: 12px;
+  right: -20px;
+  transform: rotate(6deg);
+  z-index: 2;
+  background: linear-gradient(135deg, #ff7ac8, #ff66a8);
+  color: #fff;
+  font-weight: 700;
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  box-shadow: 0 6px 16px rgba(0,0,0,.25);
+}
+
+.mock-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;      /* scale down to fit the box */
+}
+
+
 .sparkle{position:absolute; inset:auto -10% -30% auto; width:140%; height:60%;
   background:radial-gradient(ellipse at 40% 0%, rgba(255,122,200,.25), transparent 55%);}
 .sheet{
@@ -162,3 +193,4 @@ footer{padding:24px 0; color:var(--muted)}
   .templates{grid-template-columns:repeat(2,1fr)}
   .social-proof{grid-template-columns:1fr}
 }
+
