@@ -16,7 +16,7 @@
         <span>GlowPlanner</span>
       </div>
       <div class="nav-cta">
-        <!-- Download test button -->
+        <!-- Download Test uses a relative path to /public/pdfs/... -->
         <button class="btn secondary" id="btnTest">Download Test</button>
       </div>
     </div>
@@ -48,25 +48,18 @@
           </div>
         </div>
 
+        <!-- MOCK: uses your exported PNG inside the hero -->
         <div class="mock" aria-label="Planner preview mockup">
           <div class="sticker">FREE SAMPLE</div>
-          <div class="sheet">
-            <h3>7-Day Glow-Up</h3>
-            <div class="grid">
-              <div>
-                <div class="line" style="width:85%"></div>
-                <div class="line" style="width:70%; margin-top:8px"></div>
-                <div class="line" style="width:60%; margin-top:8px"></div>
-              </div>
-              <div>
-                <div class="line" style="width:90%"></div>
-                <div class="line" style="width:72%; margin-top:8px"></div>
-                <div class="line" style="width:66%; margin-top:8px"></div>
-              </div>
-            </div>
-            <div class="line" style="height:14px; width:60%"></div>
-          </div>
-          <div class="sparkle" aria-hidden="true"></div>
+          <img
+            class="mock-img"
+            src="/img/mock-glowplanner-v4.png"
+            alt="GlowPlanner 7-Day Glow-Up printable preview"
+            width="1000"
+            height="1400"
+            decoding="async"
+            loading="eager"
+          />
         </div>
       </div>
     </section>
@@ -117,16 +110,17 @@
   <script>
     document.getElementById('y').textContent = new Date().getFullYear();
 
+    // Simple download that works on localhost, Vercel preview, and custom domain
     function downloadPDF(filename = 'glowplanner-fillable.pdf') {
       const a = document.createElement('a');
-      a.href = '/pdfs/' + filename;   // points to public/pdfs folder
+      a.href = '/pdfs/' + filename;   // served from /public/pdfs/...
       a.download = filename;
       document.body.appendChild(a);
       a.click();
       a.remove();
     }
 
-    // Bind test buttons
+    // Bind buttons
     document.getElementById('btnTest').addEventListener('click', () => downloadPDF());
     document.getElementById('btnDownload').addEventListener('click', () => downloadPDF());
     document.getElementById('btnDownload2').addEventListener('click', () => downloadPDF());
