@@ -4,55 +4,84 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>GlowPlanner</title>
-  <meta name="description" content="Pretty, practical planners.">
+  <meta name="description" content="Pretty, practical planners without the overwhelm."/>
   <style>
     :root{
       --bg:#0f1223; --text:#f7f8ff; --muted:#c9cbe8;
       --card:rgba(255,255,255,.05); --line:rgba(255,255,255,.12);
-      --primary:#ff7ac8; --secondary:#9ad8ff; --radius:16px; --max:980px;
+      --primary:#ff7ac8; --secondary:#9ad8ff; --radius:16px; --max:1100px;
     }
     *{box-sizing:border-box}
-    body{margin:0;background:
-      radial-gradient(1000px 700px at 10% -10%,rgba(255,122,200,.20),transparent 60%),
-      radial-gradient(1000px 700px at 110% 10%,rgba(154,216,255,.16),transparent 60%),
-      #0f1223;color:var(--text);font:16px/1.5 ui-sans-serif,Inter,system-ui}
-    .container{max-width:var(--max);margin:0 auto;padding:0 18px}
-    header{position:sticky;top:0;background:rgba(15,18,35,.7);backdrop-filter:blur(8px);
-      border-bottom:1px solid rgba(255,255,255,.08)}
-    .nav{display:flex;align-items:center;justify-content:space-between;height:64px}
-    .brand{font-weight:900;letter-spacing:.3px}
-    section{padding:36px 0}
-    .btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 16px;
-      border-radius:999px;font-weight:800;text-decoration:none;color:#111;background:
-      linear-gradient(135deg,var(--primary),#ff66a8)}
-    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,.2);color:var(--text)}
-    .cta-band{background:
-      radial-gradient(400px 170px at 15% 40%, rgba(255,122,200,.25), transparent 60%),
-      radial-gradient(400px 170px at 85% 60%, rgba(154,216,255,.25), transparent 60%),
-      linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-      border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:22px}
-    .row{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
-    h3{margin:0}
-    footer{padding:22px 0;color:var(--muted);border-top:1px solid rgba(255,255,255,.08)}
+    body{
+      margin:0; color:var(--text); font:16px/1.5 ui-sans-serif,Inter,system-ui;
+      background:
+        radial-gradient(1200px 800px at 10% -10%,rgba(255,122,200,.22),transparent 60%),
+        radial-gradient(1200px 800px at 110% 10%,rgba(154,216,255,.18),transparent 60%),
+        #0f1223;
+    }
+    .container{max-width:var(--max); margin:0 auto; padding:0 18px}
+    header{
+      position:sticky; top:0; z-index:40;
+      background:rgba(15,18,35,.7); backdrop-filter:blur(8px);
+      border-bottom:1px solid rgba(255,255,255,.08)
+    }
+    .nav{display:flex; align-items:center; justify-content:space-between; height:64px}
+    .brand{font-weight:900; letter-spacing:.3px}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:.5rem;
+      padding:12px 16px; border-radius:999px; font-weight:800; text-decoration:none;
+      color:#111; background:linear-gradient(135deg,var(--primary),#ff66a8)
+    }
+    .btn.secondary{background:linear-gradient(135deg,var(--secondary),#6cc9ff); color:#0f172a}
+    .btn.ghost{background:transparent; border:1px solid rgba(255,255,255,.2); color:var(--text)}
+    h1{margin:0 0 10px; font-size:clamp(28px,6vw,52px); line-height:1.05}
+    p.lead{margin:0; color:var(--muted); font-size:clamp(16px,2.6vw,20px)}
+    .hero{padding:48px 0}
+    .hero-actions{display:flex; gap:10px; margin-top:16px; flex-wrap:wrap}
+    section{padding:34px 0}
+    .cta-band{
+      background:
+        radial-gradient(400px 170px at 15% 40%, rgba(255,122,200,.25), transparent 60%),
+        radial-gradient(400px 170px at 85% 60%, rgba(154,216,255,.25), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:var(--radius); padding:22px
+    }
+    .row{display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap}
+    footer{padding:22px 0; color:var(--muted); border-top:1px solid rgba(255,255,255,.08)}
   </style>
 </head>
 <body>
   <header>
     <div class="container nav">
       <div class="brand">GlowPlanner</div>
-      <button class="btn ghost" id="btnTest">Download Test</button>
+      <div style="display:flex; gap:10px">
+        <button class="btn ghost" id="btnTest">Download Test</button>
+      </div>
     </div>
   </header>
 
   <main>
-    <!-- Final CTA only -->
+    <!-- HERO (kept) -->
+    <section class="hero">
+      <div class="container">
+        <h1>Design gorgeous planners in seconds.</h1>
+        <p class="lead">Create meal, fitness, budgeting, and self-care planners that look good and actually get used.</p>
+        <div class="hero-actions">
+          <button class="btn secondary" id="btnDownload">Download Test PDF</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- FINAL CTA (kept) -->
     <section id="final">
       <div class="container">
         <div class="cta-band">
           <div class="row">
-            <h3>Ready to make routines stick?</h3>
-            <div style="display:flex;gap:10px">
-              <button class="btn" id="btnDownload">Download Test PDF</button>
+            <h3 style="margin:0">Ready to make routines stick?</h3>
+            <div>
+              <a class="btn" href="#!" id="btnDownload2">Download Test PDF</a>
+              <a class="btn ghost" href="#!">Try free first</a>
             </div>
           </div>
         </div>
@@ -61,7 +90,7 @@
   </main>
 
   <footer>
-    <div class="container" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+    <div class="container" style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap">
       <div class="brand">GlowPlanner</div>
       <div class="muted">© <span id="y"></span></div>
     </div>
@@ -70,7 +99,7 @@
   <script>
     document.getElementById('y').textContent = new Date().getFullYear();
 
-    // Simple downloader that hits your Vercel function
+    // Stream a PDF from your Vercel function (same-origin): /api/glowup-pdf
     async function downloadPDF(endpoint = '/api/glowup-pdf', filename = '7-day-glow-up.pdf'){
       try{
         const res = await fetch(endpoint);
@@ -84,8 +113,10 @@
       }
     }
 
-    document.getElementById('btnDownload').addEventListener('click', () => downloadPDF());
-    document.getElementById('btnTest').addEventListener('click', () => downloadPDF('/api/glowup-pdf', 'test-glow-up.pdf'));
+    const hook = (id, name) => document.getElementById(id)?.addEventListener('click', () => downloadPDF('/api/glowup-pdf', name));
+    hook('btnTest', 'test-glow-up.pdf');
+    hook('btnDownload', '7-day-glow-up.pdf');
+    hook('btnDownload2', '7-day-glow-up.pdf');
   </script>
 </body>
 </html>
