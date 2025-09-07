@@ -65,39 +65,62 @@ header.nav{
 .hero .actions{display:flex; gap:12px; margin-top:18px; flex-wrap:wrap}
 
 /* Mock preview */
-.mock {
+/* Mock container controls size; sticker sits OUTSIDE the clipped area */
+.mock{
   position: relative;
-  width: 100%;              /* container width controlled by grid/parent */
-  max-width: 420px;         /* fixed max size for hero */
-  aspect-ratio: 3/5;        /* keeps tall planner proportion */
-  border-radius: 20px;
-  overflow: hidden;
-  background: #fff;         /* fallback background */
-  box-shadow: 0 18px 40px rgba(15,18,35,.35);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 100%;
+  max-width: 420px;               /* tune for your layout */
+  aspect-ratio: 3 / 4.4;          /* tall card proportion */
+  display: grid;
+  place-items: center;
+  overflow: visible;              /* <— lets the sticker stick out */
+  margin-inline: auto;
 }
 
-.mock .sticker {
-  position: absolute;
-  top: 12px;
-  right: -20px;
-  transform: rotate(6deg);
-  z-index: 2;
-  background: linear-gradient(135deg, #ff7ac8, #ff66a8);
-  color: #fff;
-  font-weight: 700;
-  font-size: 12px;
-  padding: 6px 12px;
-  border-radius: 999px;
-  box-shadow: 0 6px 16px rgba(0,0,0,.25);
-}
-
-.mock-img {
+/* The rounded, clipped viewport for the image */
+.mock-viewport{
+  position: relative;
   width: 100%;
   height: 100%;
-  object-fit: contain;      /* scale down to fit the box */
+  border-radius: 24px;
+  overflow: hidden;               /* <— clips only the image */
+  background: #fff;
+  box-shadow:
+    0 18px 40px rgba(15,18,35,.35),
+    0 2px 0 rgba(0,0,0,.06) inset; /* subtle top edge */
+}
+
+/* The preview image scales to the box; centered nicely */
+.mock-img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;            /* image obeys the box */
+  object-position: center top;    /* bias to the top (shows header + grid) */
+  display: block;
+  transform: translateY(2px);     /* tiny nudge if it looked “off” */
+}
+
+/* Sticker no longer clipped */
+.mock .sticker{
+  position: absolute;
+  top: -8px;                      /* sits above the rounded frame */
+  right: 12px;
+  z-index: 3;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: linear-gradient(135deg,#ff7ac8,#ff66a8);
+  color: #fff;
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: .2px;
+  transform: rotate(6deg);
+  box-shadow: 0 10px 22px rgba(0,0,0,.22), 0 1px 0 rgba(255,255,255,.6) inset;
+  pointer-events: none;
+}
+
+/* Bigger on wide screens */
+@media (min-width: 1100px){
+  .mock{ max-width: 520px; }
 }
 
 
@@ -193,4 +216,5 @@ footer{padding:24px 0; color:var(--muted)}
   .templates{grid-template-columns:repeat(2,1fr)}
   .social-proof{grid-template-columns:1fr}
 }
+
 
