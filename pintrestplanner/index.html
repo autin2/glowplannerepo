@@ -8,26 +8,19 @@
   <link rel="canonical" href="https://example.com/"/>
   <link rel="stylesheet" href="style.css"/>
 
-  <!-- Minimal modal styles (scoped) -->
+  <!-- Supabase client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Public envs injected by Vercel function -->
+  <script src="/api/env.js"></script>
+
   <style>
+    /* Minimal styles for the login modal (same vibe as before) */
     .btn.ghost { background: transparent; border: 1px solid var(--border, #2a2f3f); color: #eaeefe }
     .btn.primary { background: var(--primary, #6c7bff); color: #fff }
-    /* Modal shell */
-    .modal {
-      position: fixed; inset: 0; z-index: 80; display: none;
-    }
+    .modal { position: fixed; inset: 0; z-index: 80; display: none; }
     .modal.open { display: grid; place-items: center; }
-    .modal-backdrop {
-      position: absolute; inset: 0; background: rgba(10,12,22,.6); backdrop-filter: blur(4px);
-    }
-    .modal-panel {
-      position: relative; z-index: 1; width: min(92vw, 420px);
-      border-radius: 16px; background: #0f1222; color: #f4f6ff;
-      box-shadow: 0 30px 80px rgba(0,0,0,.45);
-      border: 1px solid rgba(255,255,255,.06);
-      padding: 24px;
-      animation: pop .14s ease-out;
-    }
+    .modal-backdrop { position: absolute; inset: 0; background: rgba(10,12,22,.6); backdrop-filter: blur(4px); }
+    .modal-panel { position: relative; z-index: 1; width: min(92vw, 420px); border-radius: 16px; background: #0f1222; color: #f4f6ff; box-shadow: 0 30px 80px rgba(0,0,0,.45); border: 1px solid rgba(255,255,255,.06); padding: 24px; animation: pop .14s ease-out; }
     @keyframes pop { from { transform: translateY(6px) scale(.98); opacity: .6 } to { transform:none; opacity:1 } }
     .modal-head { display:flex; align-items:center; justify-content:space-between; margin-bottom: 16px; }
     .modal-head .brand { display:flex; align-items:center; gap:10px; font-weight:800; }
@@ -35,10 +28,7 @@
     .xbtn:hover { background: rgba(255,255,255,.06) }
     .field { display:flex; flex-direction:column; gap:8px; margin: 12px 0 }
     .field label { font-size: 12px; color: #b8bde6; }
-    .field input {
-      background: #0b0e1a; border: 1px solid rgba(255,255,255,.08); color: #f4f6ff;
-      padding: 12px 12px; border-radius: 10px; outline: none;
-    }
+    .field input { background: #0b0e1a; border: 1px solid rgba(255,255,255,.08); color: #f4f6ff; padding: 12px 12px; border-radius: 10px; outline: none; }
     .field input:focus { border-color: #7e8bff; box-shadow: 0 0 0 3px rgba(126,139,255,.2) }
     .row { display:flex; gap:10px; align-items:center; }
     .hr { height:1px; background: rgba(255,255,255,.08); margin: 14px 0 }
@@ -58,7 +48,6 @@
         <span>GlowPlanner</span>
       </div>
       <div class="nav-cta">
-        <!-- Replaced "Download Test" with Sign In -->
         <button class="btn ghost" id="btnSignIn">Sign In</button>
       </div>
     </div>
@@ -146,7 +135,7 @@
     </div>
   </footer>
 
-  <!-- LOGIN MODAL (frontend only) -->
+  <!-- LOGIN MODAL -->
   <div class="modal" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginTitle" aria-hidden="true">
     <div class="modal-backdrop" data-close></div>
     <div class="modal-panel" tabindex="-1">
@@ -158,7 +147,7 @@
         <button class="xbtn" title="Close" data-close aria-label="Close">✕</button>
       </div>
 
-      <form id="loginForm" onsubmit="event.preventDefault(); /* hook backend later */">
+      <form id="loginForm" onsubmit="event.preventDefault()">
         <div class="field">
           <label for="email">Email</label>
           <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required/>
@@ -172,81 +161,124 @@
           <label class="row" style="gap:8px; font-size:12px; color:#b8bde6">
             <input type="checkbox" id="remember" style="accent-color:#7e8bff"/> Remember me
           </label>
-          <a href="#" class="muted">Forgot?</a>
+          <a href="#" id="linkForgot" class="muted">Forgot?</a>
         </div>
 
-        <button class="btn primary" style="width:100%">Continue</button>
+        <button class="btn primary" id="btnEmailPw" style="width:100%">Continue</button>
 
         <div class="hr"></div>
         <button type="button" class="oauth" id="btnGoogle">Continue with Google</button>
-        <button type="button" class="oauth" style="margin-top:8px">Continue with Apple</button>
 
         <p class="legal">By continuing, you agree to our <a href="#">Terms</a> and <a href="#">Privacy</a>.</p>
+        <p class="muted" id="authNote" style="margin-top:8px;"></p>
       </form>
     </div>
   </div>
 
   <script>
-    // Year footer
     document.getElementById('y').textContent = new Date().getFullYear();
 
-    // Download buttons (unchanged)
-    function downloadPDF(filename = 'glowplanner-fillable.pdf') {
+    // ===== Init Supabase from public envs =====
+    // window.ENV is provided by /api/env.js
+    const supabase = window.supabase.createClient(
+      window.ENV?.SUPABASE_URL || "",
+      window.ENV?.SUPABASE_ANON_KEY || "",
+      { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } }
+    );
+
+    // --- Elements
+    const loginModal = document.getElementById('loginModal');
+    const panel = loginModal.querySelector('.modal-panel');
+    const openBtn = document.getElementById('btnSignIn');
+    const closeEls = loginModal.querySelectorAll('[data-close]');
+    const emailEl = document.getElementById('email');
+    const pwEl = document.getElementById('password');
+    const note = document.getElementById('authNote');
+
+    // ===== Modal helpers
+    let lastFocus = null;
+    function openModal(){ lastFocus = document.activeElement; loginModal.classList.add('open'); loginModal.removeAttribute('aria-hidden'); setTimeout(()=>emailEl.focus(),0); }
+    function closeModal(){ loginModal.classList.remove('open'); loginModal.setAttribute('aria-hidden','true'); if(lastFocus) lastFocus.focus(); }
+    openBtn.addEventListener('click', openModal);
+    closeEls.forEach(el => el.addEventListener('click', closeModal));
+    loginModal.querySelector('.modal-backdrop').addEventListener('click', closeModal);
+    loginModal.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
+
+    // ===== Gated Download
+    let pendingDownload = false;  // if user clicks download while logged out
+    async function userIsAuthed(){
+      const { data: { session } } = await supabase.auth.getSession();
+      return !!session;
+    }
+    function startDownload(filename = 'glowplanner-fillable.pdf'){
       const a = document.createElement('a');
       a.href = '/pdfs/' + filename;
       a.download = filename;
       document.body.appendChild(a); a.click(); a.remove();
     }
-    document.getElementById('btnDownload').addEventListener('click', () => downloadPDF());
-    document.getElementById('btnDownload2').addEventListener('click', () => downloadPDF());
-
-    // ===== Login modal (frontend only) =====
-    const modal = document.getElementById('loginModal');
-    const panel = modal.querySelector('.modal-panel');
-    const openBtn = document.getElementById('btnSignIn');
-    const closeEls = modal.querySelectorAll('[data-close]');
-    let lastFocus = null;
-
-    function openModal(){
-      lastFocus = document.activeElement;
-      modal.classList.add('open');
-      modal.removeAttribute('aria-hidden');
-      // focus first field
-      const firstInput = document.getElementById('email');
-      setTimeout(() => firstInput.focus(), 0);
-      trapFocus(true);
-    }
-    function closeModal(){
-      modal.classList.remove('open');
-      modal.setAttribute('aria-hidden','true');
-      trapFocus(false);
-      if(lastFocus) lastFocus.focus();
-    }
-    openBtn.addEventListener('click', openModal);
-    closeEls.forEach(el => el.addEventListener('click', closeModal));
-    modal.addEventListener('keydown', (e) => {
-      if(e.key === 'Escape') closeModal();
-    });
-    // click backdrop
-    modal.querySelector('.modal-backdrop').addEventListener('click', closeModal);
-
-    // Simple focus trap
-    function trapFocus(active){
-      if(!active) { document.removeEventListener('focus', focusGuard, true); return; }
-      document.addEventListener('focus', focusGuard, true);
-    }
-    function focusGuard(e){
-      if(!modal.classList.contains('open')) return;
-      if(!panel.contains(e.target)){
-        e.stopPropagation();
-        panel.focus();
+    async function gatedDownload(){
+      if (await userIsAuthed()) {
+        startDownload();
+      } else {
+        pendingDownload = true;
+        openModal();
       }
     }
+    document.getElementById('btnDownload').addEventListener('click', gatedDownload);
+    document.getElementById('btnDownload2').addEventListener('click', gatedDownload);
 
-    // Fake Google click (for now)
-    document.getElementById('btnGoogle').addEventListener('click', () => {
-      alert('Google Sign-In will go here (frontend only for now).');
+    // ===== Email + Password (sign-in or sign-up on first try)
+    document.getElementById('btnEmailPw').addEventListener('click', async () => {
+      note.textContent = 'Signing in...';
+      const email = emailEl.value.trim();
+      const password = pwEl.value;
+      if(!email || !password){ note.textContent = 'Enter your email and password.'; return; }
+
+      // Try sign-in
+      let { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+      // Auto sign-up on invalid credentials (first-time users)
+      if (error && /Invalid login credentials/i.test(error.message || '')) {
+        ({ data, error } = await supabase.auth.signUp({ email, password }));
+      }
+
+      if (error) { note.textContent = 'Error: ' + (error.message || 'Something went wrong.'); return; }
+
+      note.textContent = 'Success! You are signed in.';
+      setSignedInUI();
+      setTimeout(() => {
+        closeModal();
+        if (pendingDownload) { pendingDownload = false; startDownload(); }
+      }, 300);
     });
+
+    // ===== Google OAuth
+    document.getElementById('btnGoogle').addEventListener('click', async () => {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: window.location.origin }
+      });
+      if (error) note.textContent = 'Google sign-in error: ' + error.message;
+    });
+
+    // ===== Session on load
+    (async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) setSignedInUI();
+    })();
+
+    // ===== Swap nav button to Account when signed in (with sign-out)
+    function setSignedInUI(){
+      const btn = document.getElementById('btnSignIn');
+      btn.textContent = 'Account';
+      btn.onclick = async () => {
+        const choice = confirm('Sign out of GlowPlanner?');
+        if (!choice) return;
+        await supabase.auth.signOut();
+        btn.textContent = 'Sign In';
+        btn.onclick = openModal;
+      };
+    }
   </script>
 </body>
 </html>
