@@ -3,108 +3,76 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>GlowPlanner — Aesthetic Printable Planners You’ll Actually Use</title>
-  <meta name="description" content="Design gorgeous, hyper-practical planners in seconds. Grab the free 7-Day Glow-Up printable, then unlock unlimited templates, themes, and exports."/>
-  <link rel="canonical" href="https://example.com/"/>
-  <link rel="stylesheet" href="style.css"/>
+  <title>GlowPlanner</title>
+  <meta name="description" content="Printable planners that are actually pretty and practical."/>
+  <style>
+    :root{
+      --bg:#0f1223; --text:#f7f8ff; --muted:#c9cbe8;
+      --card:rgba(255,255,255,.05); --line:rgba(255,255,255,.12);
+      --primary:#ff7ac8; --secondary:#9ad8ff; --radius:16px; --max:1100px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:
+      radial-gradient(1200px 800px at 10% -10%,rgba(255,122,200,.22),transparent 60%),
+      radial-gradient(1200px 800px at 110% 10%,rgba(154,216,255,.18),transparent 60%),
+      #0f1223;color:var(--text);font:16px/1.5 ui-sans-serif,Inter,system-ui}
+    .container{max-width:var(--max);margin:0 auto;padding:0 18px}
+    header{position:sticky;top:0;background:rgba(15,18,35,.7);backdrop-filter:blur(8px);
+      border-bottom:1px solid rgba(255,255,255,.08)}
+    .nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+    .brand{font-weight:900;letter-spacing:.3px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 16px;
+      border-radius:999px;font-weight:800;text-decoration:none;color:#111;background:
+      linear-gradient(135deg,var(--primary),#ff66a8)}
+    .btn.outline{background:transparent;border:1px solid rgba(255,255,255,.18);color:var(--text)}
+    .btn.secondary{background:linear-gradient(135deg,var(--secondary),#6cc9ff)}
+    h1,h2{margin:0 0 8px}
+    .muted{color:var(--muted)}
+    section{padding:28px 0}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .thumb{background:#fff;border-radius:12px;aspect-ratio:5/7;position:relative;box-shadow:0 8px 22px rgba(0,0,0,.25)}
+    .tag{position:absolute;top:8px;left:8px;background:#111;color:#fff;font-size:12px;padding:6px 8px;border-radius:999px}
+    .price{position:relative}
+    .ribbon{position:absolute;top:10px;right:10px;background:linear-gradient(135deg,var(--primary),#ff66a8);
+      color:#111;font-weight:900;padding:6px 10px;border-radius:999px;font-size:12px}
+    .p-num{font-size:32px;font-weight:900}
+    .cta-band{background:
+      radial-gradient(400px 170px at 15% 40%, rgba(255,122,200,.25), transparent 60%),
+      radial-gradient(400px 170px at 85% 60%, rgba(154,216,255,.25), transparent 60%),
+      linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:18px}
+    .row{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+    summary{cursor:pointer;font-weight:900}
+    footer{padding:22px 0;color:var(--muted);border-top:1px solid rgba(255,255,255,.08)}
+    @media (max-width:900px){
+      .grid-4{grid-template-columns:repeat(2,1fr)}
+      .grid-3{grid-template-columns:1fr}
+      .grid-2{grid-template-columns:1fr}
+    }
+  </style>
 </head>
 <body>
-  <header class="nav">
-    <div class="container nav-inner">
-      <div class="brand">
-        <div class="logo" aria-hidden="true"></div>
-        <span>GlowPlanner</span>
-      </div>
-      <nav class="nav-links" aria-label="Main">
-        <a href="#templates">Templates</a>
-        <a href="#how">How it works</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#faq">FAQ</a>
-      </nav>
-      <div class="nav-cta">
-        <a class="btn ghost" href="#free">Free download</a>
-        <a class="btn secondary" href="#pricing">Go Pro</a>
+  <header>
+    <div class="container nav">
+      <div class="brand">GlowPlanner</div>
+      <div style="display:flex;gap:10px">
+        <a class="btn outline" href="#pricing">Pricing</a>
+        <button class="btn secondary" id="btnTest">Download Test</button>
       </div>
     </div>
   </header>
 
   <main>
-    <!-- HERO -->
-    <section class="hero">
-      <div class="container hero-grid">
-        <div>
-          <span class="badge">Pinterest-ready printables</span>
-          <h1>Design gorgeous planners in seconds.<br/>Stay consistent without the overwhelm.</h1>
-          <p>Create meal, fitness, budgeting, and self-care planners that feel like stationery you’d actually buy. Start with a free 7-Day Glow-Up printable, then unlock unlimited templates with Pro.</p>
-          <div class="actions">
-            <a class="btn" href="#free">Get the free 7-day printable</a>
-            <a class="btn secondary" href="#templates">Browse templates</a>
-          </div>
-          <div class="trust">
-            <div class="avatars" aria-hidden="true">
-              <div class="avatar" style="background-image:linear-gradient(#fce,#ffa)"></div>
-              <div class="avatar" style="background-image:linear-gradient(#ccf,#cfc)"></div>
-              <div class="avatar" style="background-image:linear-gradient(#ddd,#fff)"></div>
-              <div class="avatar" style="background-image:linear-gradient(#eef,#cff)"></div>
-            </div>
-            <div class="kpis">
-              <span class="k">12k+ downloads</span>
-              <span class="k">4.9★ avg rating</span>
-              <span class="k">No design skills needed</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="mock" aria-label="Planner preview mockup">
-          <div class="sticker">FREE SAMPLE</div>
-          <div class="sheet">
-            <h3>7-Day Glow-Up</h3>
-            <div class="grid">
-              <div>
-                <div class="line" style="width:85%"></div>
-                <div class="line" style="width:70%; margin-top:8px"></div>
-                <div class="line" style="width:60%; margin-top:8px"></div>
-              </div>
-              <div>
-                <div class="line" style="width:90%"></div>
-                <div class="line" style="width:72%; margin-top:8px"></div>
-                <div class="line" style="width:66%; margin-top:8px"></div>
-              </div>
-            </div>
-            <div class="line" style="height:14px; width:60%"></div>
-          </div>
-          <div class="sparkle" aria-hidden="true"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- VALUE CARDS -->
-    <section class="section">
-      <div class="container cards">
-        <div class="card">
-          <div class="ic" aria-hidden="true"></div>
-          <h4>Done in minutes</h4>
-          <p>Pick a template, tweak sections (meals, workouts, budget), export PDF or PNG. No Canva chaos.</p>
-        </div>
-        <div class="card">
-          <div class="ic" aria-hidden="true" style="background:linear-gradient(135deg,var(--primary),var(--accent))"></div>
-          <h4>Aesthetic & functional</h4>
-          <p>Clean typography and soft colorways designed to look gorgeous on paper and Pinterest.</p>
-        </div>
-        <div class="card">
-          <div class="ic" aria-hidden="true" style="background:linear-gradient(135deg,var(--accent),var(--primary-2))"></div>
-          <h4>Routines that stick</h4>
-          <p>Habit loops, progress bars, and weekly reviews help you stay consistent (and motivated).</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- TEMPLATES -->
-    <section id="templates" class="section">
+    <!-- Templates -->
+    <section id="templates">
       <div class="container">
-        <h2 style="margin:0 0 8px">Popular templates</h2>
+        <h2>Popular templates</h2>
         <p class="muted">All templates are printable & export-ready. Customize sections and headings in seconds.</p>
-        <div class="templates">
+        <div class="grid-4">
           <div class="thumb"><span class="tag">Meal Plan</span></div>
           <div class="thumb"><span class="tag">Fitness</span></div>
           <div class="thumb"><span class="tag">Budget</span></div>
@@ -117,44 +85,44 @@
       </div>
     </section>
 
-    <!-- HOW IT WORKS -->
-    <section id="how" class="section">
-      <div class="container how">
-        <div class="step"><b>1) Pick a base</b>Choose a template + colorway.</div>
-        <div class="step"><b>2) Personalize</b>Add sections (meals, macros, savings, skincare), drag to reorder.</div>
-        <div class="step"><b>3) Export & print</b>One-click PDF/PNG export at 300 DPI. Print at home or share to Pinterest.</div>
+    <!-- How it works -->
+    <section id="how">
+      <div class="container grid-3">
+        <div class="card"><h3>1) Pick a base</h3><p class="muted">Choose a template + colorway.</p></div>
+        <div class="card"><h3>2) Personalize</h3><p class="muted">Add sections (meals, macros, savings, skincare), drag to reorder.</p></div>
+        <div class="card"><h3>3) Export & print</h3><p class="muted">One-click PDF/PNG export at 300 DPI. Print at home or share to Pinterest.</p></div>
       </div>
     </section>
 
-    <!-- FREEBIE CTA -->
-    <section id="free" class="section">
+    <!-- Freebie -->
+    <section id="free">
       <div class="container cta-band">
         <div class="row">
           <div>
-            <h3 class="tight">Free: 7-Day Glow-Up printable</h3>
-            <p class="fine">A mini routine for meals • movement • self-care • wins. Instant download.</p>
+            <h3 style="margin:0 0 6px">Free: 7-Day Glow-Up printable</h3>
+            <p class="muted" style="margin:0">A mini routine for meals • movement • self-care • wins. Instant download.</p>
           </div>
-          <div class="cta-buttons">
-            <a class="btn" href="#" onclick="fakeDownload(event)">Download PDF</a>
-            <a class="btn ghost" href="#pricing">Unlock all templates</a>
+          <div style="display:flex;gap:10px">
+            <button class="btn" id="btnDownload">Download PDF</button>
+            <a class="btn outline" href="#pricing">Unlock all templates</a>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SOCIAL PROOF -->
-    <section class="section">
-      <div class="container social-proof">
-        <div class="quote">“Printed the Meal Plan + Budget set. It’s the first time I’ve stuck to both for 3 weeks.”<b>— Maya R.</b></div>
-        <div class="quote">“The layouts are clean, not cluttered. Love the neutral + blush themes.”<b>— Evelyn T.</b></div>
-        <div class="quote">“Exported to Pinterest and it actually got saves?? Instant content.”<b>— Kirsten L.</b></div>
+    <!-- Social proof -->
+    <section id="quotes">
+      <div class="container grid-3">
+        <div class="card">“Printed the Meal Plan + Budget set. It’s the first time I’ve stuck to both for 3 weeks.”<br><b>— Maya R.</b></div>
+        <div class="card">“The layouts are clean, not cluttered. Love the neutral + blush themes.”<br><b>— Evelyn T.</b></div>
+        <div class="card">“Exported to Pinterest and it actually got saves?? Instant content.”<br><b>— Kirsten L.</b></div>
       </div>
     </section>
 
-    <!-- PRICING -->
-    <section id="pricing" class="section">
-      <div class="container pricing">
-        <div class="price">
+    <!-- Pricing -->
+    <section id="pricing">
+      <div class="container grid-2">
+        <div class="card price">
           <h3>Free</h3>
           <div class="p-num">$0</div>
           <ul>
@@ -162,54 +130,42 @@
             <li>2 starter templates</li>
             <li>Basic colors</li>
           </ul>
-          <div class="mt-12"><a class="btn ghost" href="#free">Start free</a></div>
+          <div style="margin-top:10px"><a class="btn outline" href="#free">Start free</a></div>
         </div>
-        <div class="price best">
+        <div class="card price">
           <div class="ribbon">Most Popular</div>
           <h3>Pro</h3>
-          <div class="p-num">$7<span class="per">/mo</span></div>
+          <div class="p-num">$7<span style="font-size:14px">/mo</span></div>
           <ul>
             <li>All templates + new drops</li>
             <li>Unlimited exports (PDF/PNG, 300 DPI)</li>
             <li>Theme packs: Blush • Neutral • Sky • Lilac</li>
             <li>Priority requests & support</li>
           </ul>
-          <div class="mt-12"><a class="btn" href="#" onclick="toCheckout()">Go Pro</a></div>
+          <div style="margin-top:10px"><a class="btn" href="#">Go Pro</a></div>
         </div>
       </div>
     </section>
 
     <!-- FAQ -->
-    <section id="faq" class="section">
-      <div class="container faq">
-        <details>
-          <summary>Can I use this with Pinterest?</summary>
-          <p>Yes. Export PNG at 1000×1500 or 1200×1800 and post as an Idea Pin or standard pin.</p>
-        </details>
-        <details>
-          <summary>Will it work for A4 / Letter?</summary>
-          <p>Exports are vector-sharp and sized for US Letter by default; switch to A4 in export.</p>
-        </details>
-        <details>
-          <summary>Is there a free trial?</summary>
-          <p>Grab the free 7-Day printable anytime. Pro can be cancelled anytime, no lock-in.</p>
-        </details>
-        <details>
-          <summary>Do I need design skills?</summary>
-          <p>No. Templates are pre-styled; you just toggle sections and rename headings.</p>
-        </details>
+    <section id="faq">
+      <div class="container grid-2">
+        <details><summary>Can I use this with Pinterest?</summary><p class="muted">Yes. Export PNG at 1000×1500 or 1200×1800 and post as an Idea Pin or standard pin.</p></details>
+        <details><summary>Will it work for A4 / Letter?</summary><p class="muted">Yes—Letter by default; add A4 in export.</p></details>
+        <details><summary>Is there a free trial?</summary><p class="muted">Free sample anytime. Cancel Pro anytime.</p></details>
+        <details><summary>Do I need design skills?</summary><p class="muted">No. Templates are pre-styled; you just toggle sections and rename headings.</p></details>
       </div>
     </section>
 
-    <!-- FINAL CTA -->
-    <section class="section">
+    <!-- Final CTA -->
+    <section id="final">
       <div class="container">
         <div class="cta-band">
           <div class="row">
-            <h3 class="tight">Ready to make routines stick?</h3>
+            <h3 style="margin:0">Ready to make routines stick?</h3>
             <div>
-              <a class="btn" href="#" onclick="toCheckout()">Get Pro for $7/mo</a>
-              <a class="btn ghost" href="#free">Try free first</a>
+              <a class="btn" href="#pricing">Get Pro for $7/mo</a>
+              <a class="btn outline" href="#free">Try free first</a>
             </div>
           </div>
         </div>
@@ -218,21 +174,32 @@
   </main>
 
   <footer>
-    <div class="container foot">
-      <div class="brand"><div class="logo"></div><span>GlowPlanner</span></div>
-      <div class="fine">© <span id="y"></span> GlowPlanner. Pretty planners, practical habits.</div>
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+      <div class="brand">GlowPlanner</div>
+      <div class="muted">© <span id="y"></span></div>
     </div>
   </footer>
 
   <script>
     document.getElementById('y').textContent = new Date().getFullYear();
-    function fakeDownload(e){
-      e.preventDefault();
-      alert("Demo only. Hook this to your PDF generator to deliver the freebie.\nTip: Let Pinterest traffic download free without an email wall, then upsell Pro inside.");
+
+    // Reusable download helper (streams from /api/glowup-pdf)
+    async function downloadPDF(endpoint = '/api/glowup-pdf', filename = '7-day-glow-up.pdf'){
+      try{
+        const res = await fetch(endpoint);
+        if(!res.ok) throw new Error('HTTP '+res.status);
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const a = Object.assign(document.createElement('a'), { href:url, download: filename });
+        document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+      }catch(err){
+        alert('Download failed. Make sure your Vercel function at '+endpoint+' is deployed.\n\n'+err);
+      }
     }
-    function toCheckout(){
-      alert("Attach Stripe Checkout here.\nSuggestion: Monthly $7 and Yearly $49 with 14-day refund window.");
-    }
+
+    // Buttons
+    document.getElementById('btnDownload').addEventListener('click', () => downloadPDF());
+    document.getElementById('btnTest').addEventListener('click', () => downloadPDF('/api/glowup-pdf', 'test-glow-up.pdf'));
   </script>
 </body>
 </html>
