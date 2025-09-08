@@ -6,38 +6,161 @@
   <title>GlowPlanner — Aesthetic Printable Planners You’ll Actually Use</title>
   <meta name="description" content="Design gorgeous, hyper-practical planners in seconds. Grab the free 7-Day Glow-Up printable, then unlock unlimited templates, themes, and exports."/>
   <link rel="canonical" href="https://example.com/"/>
-  <link rel="stylesheet" href="style.css"/>
-
-  <!-- Supabase client -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <!-- Public envs injected by Vercel function -->
-  <script src="/api/env.js"></script>
+  <meta property="og:title" content="GlowPlanner — Aesthetic Printable Planners"/>
+  <meta property="og:description" content="Free 7-Day Glow-Up printable. Unlimited beautiful planners with Pro."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:image" content="https://example.com/og-preview.jpg"/>
 
   <style>
-    /* Minimal styles for the login modal (same vibe as before) */
-    .btn.ghost { background: transparent; border: 1px solid var(--border, #2a2f3f); color: #eaeefe }
-    .btn.primary { background: var(--primary, #6c7bff); color: #fff }
-    .modal { position: fixed; inset: 0; z-index: 80; display: none; }
-    .modal.open { display: grid; place-items: center; }
-    .modal-backdrop { position: absolute; inset: 0; background: rgba(10,12,22,.6); backdrop-filter: blur(4px); }
-    .modal-panel { position: relative; z-index: 1; width: min(92vw, 420px); border-radius: 16px; background: #0f1222; color: #f4f6ff; box-shadow: 0 30px 80px rgba(0,0,0,.45); border: 1px solid rgba(255,255,255,.06); padding: 24px; animation: pop .14s ease-out; }
-    @keyframes pop { from { transform: translateY(6px) scale(.98); opacity: .6 } to { transform:none; opacity:1 } }
-    .modal-head { display:flex; align-items:center; justify-content:space-between; margin-bottom: 16px; }
-    .modal-head .brand { display:flex; align-items:center; gap:10px; font-weight:800; }
-    .xbtn { background: transparent; border: 0; color: #cfd3ff; font-size: 18px; cursor: pointer; padding: 6px 8px; border-radius: 8px }
-    .xbtn:hover { background: rgba(255,255,255,.06) }
-    .field { display:flex; flex-direction:column; gap:8px; margin: 12px 0 }
-    .field label { font-size: 12px; color: #b8bde6; }
-    .field input { background: #0b0e1a; border: 1px solid rgba(255,255,255,.08); color: #f4f6ff; padding: 12px 12px; border-radius: 10px; outline: none; }
-    .field input:focus { border-color: #7e8bff; box-shadow: 0 0 0 3px rgba(126,139,255,.2) }
-    .row { display:flex; gap:10px; align-items:center; }
-    .hr { height:1px; background: rgba(255,255,255,.08); margin: 14px 0 }
-    .muted { color:#aeb3d7; font-size:12px }
-    .brand-pill { background: linear-gradient(135deg,#ff7ac8,#ff66a8); color:#111; font-weight:900; font-size: 10px; padding: 4px 8px; border-radius:999px }
-    .oauth { width:100%; border-radius:10px; border:1px solid rgba(255,255,255,.12); background:#0b0f1d; color:#e9ecff; padding:11px 12px; cursor:pointer }
-    .oauth:hover { background:#0e1326 }
-    .legal { font-size: 11px; color:#9aa0c7; margin-top:8px }
-    .legal a { color:#cbd1ff; text-decoration: underline }
+    :root{
+      --bg:#0f1223;
+      --surface:#151836;
+      --surface-2:#1b1f46;
+      --text:#f7f8ff;
+      --muted:#c9cbe8;
+      --primary:#ff7ac8;        /* pink */
+      --primary-2:#9ad8ff;      /* sky */
+      --accent:#cdb0ff;         /* lilac */
+      --ok:#24d17e;
+      --warn:#ffcc66;
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+      --radius:18px;
+      --radius-sm:12px;
+      --max:1140px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;background:
+        radial-gradient(1200px 800px at 10% -10%,rgba(255,122,200,.25),transparent 60%),
+        radial-gradient(1200px 800px at 110% 10%,rgba(154,216,255,.2),transparent 60%),
+        radial-gradient(900px 700px at 50% 120%,rgba(205,176,255,.2),transparent 60%),
+        var(--bg);
+      color:var(--text); font:16px/1.5 ui-sans-serif, -apple-system, Segoe UI, Roboto, Inter, system-ui, Arial;
+      letter-spacing:.2px;
+    }
+    a{color:var(--primary)}
+    .container{max-width:var(--max); margin:0 auto; padding:0 20px}
+    .btn{display:inline-flex; align-items:center; justify-content:center; gap:.6rem;
+      padding:14px 18px; border-radius:999px; text-decoration:none; font-weight:700;
+      transition:.2s transform,.2s box-shadow,.2s background;
+      box-shadow:0 10px 24px rgba(255,122,200,.25);
+      background:linear-gradient(135deg,var(--primary),#ff66a8); color:#0e0e16}
+    .btn:hover{transform:translateY(-2px)}
+    .btn.secondary{background:linear-gradient(135deg,var(--primary-2),#6bc9ff); box-shadow:0 10px 24px rgba(106,201,255,.25)}
+    .btn.ghost{background:transparent; border:1px solid rgba(255,255,255,.15); color:var(--text); box-shadow:none}
+    .badge{display:inline-block; padding:6px 10px; border-radius:999px; font-size:13px; color:#0e0e16;
+      background:linear-gradient(135deg,var(--primary-2),var(--primary)); font-weight:800}
+
+    header.nav{
+      position:sticky; top:0; z-index:50; backdrop-filter:saturate(1.2) blur(10px);
+      background:linear-gradient(180deg,rgba(10,13,30,.8),rgba(10,13,30,.2) 70%,transparent);
+      border-bottom:1px solid rgba(255,255,255,.06)
+    }
+    .nav-inner{display:flex; align-items:center; justify-content:space-between; height:64px}
+    .brand{display:flex; align-items:center; gap:10px; font-weight:900; letter-spacing:.5px}
+    .logo{width:28px; height:28px; border-radius:8px; background:
+      conic-gradient(from 40deg, var(--primary), var(--accent), var(--primary-2), var(--primary)); box-shadow:0 6px 16px rgba(255,122,200,.4)}
+    .nav-links a{color:var(--muted); text-decoration:none; margin:0 10px; font-weight:600}
+    .nav-cta{display:flex; gap:10px}
+
+    .hero{padding:64px 0 28px}
+    .hero-grid{display:grid; grid-template-columns:1.1fr .9fr; gap:28px; align-items:center}
+    .hero h1{font-size: clamp(28px, 6vw, 56px); line-height:1.05; margin:10px 0 14px}
+    .hero p{color:var(--muted); font-size: clamp(16px, 2.4vw, 20px)}
+    .hero .actions{display:flex; gap:12px; margin-top:18px; flex-wrap:wrap}
+    .mock{
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08); border-radius:var(--radius); box-shadow:var(--shadow);
+      padding:18px; position:relative; overflow:hidden
+    }
+    .sparkle{position:absolute; inset:auto -10% -30% auto; width:140%; height:60%;
+      background:radial-gradient(ellipse at 40% 0%, rgba(255,122,200,.25), transparent 55%);}
+    .sheet{
+      background:#fff; color:#222; border-radius:12px; padding:22px; box-shadow:0 10px 30px rgba(0,0,0,.25);
+      aspect-ratio: 5/7; display:grid; grid-template-rows:auto 1fr auto; gap:12px
+    }
+    .sheet h3{margin:0; font:700 22px/1.2 ui-sans-serif, Inter}
+    .sheet .grid{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+    .line{height:10px; background:linear-gradient(90deg,#eee,#f7f7f7); border-radius:6px}
+    .sticker{
+      position:absolute; top:-12px; right:-10px; rotate:-8deg;
+      background: #fff; color:#111; border-radius:10px; padding:10px 12px; font-weight:900; font-size:14px;
+      box-shadow:0 10px 18px rgba(0,0,0,.35); border:2px dashed #ffd3ec
+    }
+
+    .trust{display:flex; align-items:center; gap:18px; margin-top:16px; color:var(--muted); flex-wrap:wrap}
+    .avatars{display:flex}
+    .avatar{width:28px; height:28px; border-radius:999px; border:2px solid #0f1223; margin-left:-8px; background:#ddd}
+    .kpis{display:flex; gap:16px; flex-wrap:wrap}
+    .kpis .k{background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.08);
+      padding:10px 14px; border-radius:999px; font-weight:700; color:#ffffff; }
+
+    .section{padding:34px 0}
+    .cards{display:grid; grid-template-columns:repeat(3,1fr); gap:16px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow)}
+    .card h4{margin:0 0 4px}
+    .card p{margin:0; color:var(--muted)}
+    .ic{width:32px; height:32px; border-radius:8px; background:linear-gradient(135deg,var(--primary-2),var(--accent));
+      margin-bottom:10px}
+
+    .templates{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:12px}
+    .thumb{background:#fff; border-radius:12px; aspect-ratio:5/7; box-shadow:0 10px 18px rgba(0,0,0,.25); padding:10px; position:relative}
+    .tag{position:absolute; top:10px; left:10px; background:#111; color:#fff; font-size:11px; padding:6px 8px; border-radius:999px}
+
+    .how{display:grid; grid-template-columns:repeat(3,1fr); gap:14px}
+    .step{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08); border-radius:var(--radius); padding:18px}
+    .step b{display:block; font-size:15px; margin-bottom:6px}
+
+    .pricing{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+    .price{background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.12); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow); position:relative}
+    .price.best{outline:2px solid rgba(255,122,200,.45)}
+    .price h3{margin:0 0 6px}
+    .price ul{margin:0; padding-left:18px; color:var(--muted)}
+    .p-num{font-size:34px; font-weight:900}
+    .ribbon{position:absolute; top:14px; right:14px; background:linear-gradient(135deg,var(--primary),#ff66a8); color:#111; font-weight:900; padding:6px 10px; border-radius:999px; font-size:12px}
+
+    .social-proof{display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px}
+    .quote{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08); border-radius:var(--radius-sm); padding:14px}
+    .quote b{display:block; margin-top:8px}
+
+    .cta-band{
+      margin:28px 0; padding:18px; border-radius:var(--radius);
+      background:
+        radial-gradient(400px 170px at 15% 40%, rgba(255,122,200,.25), transparent 60%),
+        radial-gradient(400px 170px at 85% 60%, rgba(154,216,255,.25), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08)
+    }
+    .cta-band .row{display:flex; gap:16px; align-items:center; justify-content:space-between; flex-wrap:wrap}
+
+    .faq{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+    details{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08); border-radius:var(--radius-sm); padding:12px 14px}
+    summary{cursor:pointer; font-weight:800}
+    details p{color:var(--muted); margin:8px 0 0}
+
+    footer{padding:24px 0; color:var(--muted)}
+    .fine{font-size:13px; color:#aeb0d6}
+
+    @media (max-width:1024px){
+      .hero-grid{grid-template-columns:1fr}
+      .cards{grid-template-columns:1fr 1fr}
+      .templates{grid-template-columns:repeat(3,1fr)}
+      .how{grid-template-columns:1fr 1fr}
+      .pricing{grid-template-columns:1fr}
+      .social-proof{grid-template-columns:1fr 1fr}
+      .faq{grid-template-columns:1fr}
+    }
+    @media (max-width:640px){
+      .cards{grid-template-columns:1fr}
+      .templates{grid-template-columns:repeat(2,1fr)}
+      .social-proof{grid-template-columns:1fr}
+    }
   </style>
 </head>
 <body>
@@ -47,8 +170,15 @@
         <div class="logo" aria-hidden="true"></div>
         <span>GlowPlanner</span>
       </div>
+      <nav class="nav-links" aria-label="Main">
+        <a href="#templates">Templates</a>
+        <a href="#how">How it works</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+      </nav>
       <div class="nav-cta">
-        <button class="btn ghost" id="btnSignIn">Sign In</button>
+        <a class="btn ghost" href="#free">Free download</a>
+        <a class="btn secondary" href="#pricing">Go Pro</a>
       </div>
     </div>
   </header>
@@ -62,14 +192,15 @@
           <h1>Design gorgeous planners in seconds.<br/>Stay consistent without the overwhelm.</h1>
           <p>Create meal, fitness, budgeting, and self-care planners that feel like stationery you’d actually buy. Start with a free 7-Day Glow-Up printable, then unlock unlimited templates with Pro.</p>
           <div class="actions">
-            <button class="btn" id="btnDownload">Download Test PDF</button>
+            <a class="btn" href="#free">Get the free 7-day printable</a>
+            <a class="btn secondary" href="#templates">Browse templates</a>
           </div>
           <div class="trust">
             <div class="avatars" aria-hidden="true">
-              <div class="avatar" style="background-image:linear-gradient(#fce,#ffa)"></div>
-              <div class="avatar" style="background-image:linear-gradient(#ccf,#cfc)"></div>
-              <div class="avatar" style="background-image:linear-gradient(#ddd,#fff)"></div>
-              <div class="avatar" style="background-image:linear-gradient(#eef,#cff)"></div>
+              <div class="avatar" style="background-image:linear-gradient(#fce, #ffa)"></div>
+              <div class="avatar" style="background-image:linear-gradient(#ccf, #cfc)"></div>
+              <div class="avatar" style="background-image:linear-gradient(#ddd, #fff)"></div>
+              <div class="avatar" style="background-image:linear-gradient(#eef, #cff)"></div>
             </div>
             <div class="kpis">
               <span class="k">12k+ downloads</span>
@@ -79,15 +210,25 @@
           </div>
         </div>
 
-        <!-- MOCK -->
         <div class="mock" aria-label="Planner preview mockup">
           <div class="sticker">FREE SAMPLE</div>
-          <img
-            class="mock-img"
-            src="/img/mock-glowplanner-v4.png"
-            alt="GlowPlanner 7-Day Glow-Up printable preview"
-            width="1000" height="1400" decoding="async" loading="eager"
-          />
+          <div class="sheet">
+            <h3>7-Day Glow-Up</h3>
+            <div class="grid">
+              <div>
+                <div class="line" style="width:85%"></div>
+                <div class="line" style="width:70%; margin-top:8px"></div>
+                <div class="line" style="width:60%; margin-top:8px"></div>
+              </div>
+              <div>
+                <div class="line" style="width:90%"></div>
+                <div class="line" style="width:72%; margin-top:8px"></div>
+                <div class="line" style="width:66%; margin-top:8px"></div>
+              </div>
+            </div>
+            <div class="line" style="height:14px; width:60%"></div>
+          </div>
+          <div class="sparkle" aria-hidden="true"></div>
         </div>
       </div>
     </section>
@@ -113,14 +254,116 @@
       </div>
     </section>
 
-    <!-- FINAL CTA -->
+    <!-- TEMPLATES -->
+    <section id="templates" class="section">
+      <div class="container">
+        <h2 style="margin:0 0 8px">Popular templates</h2>
+        <p style="color:var(--muted); margin:0 0 12px">All templates are printable & export-ready. Customize sections and headings in seconds.</p>
+        <div class="templates">
+          <div class="thumb"><span class="tag">Meal Plan</span></div>
+          <div class="thumb"><span class="tag">Fitness</span></div>
+          <div class="thumb"><span class="tag">Budget</span></div>
+          <div class="thumb"><span class="tag">Self-Care</span></div>
+          <div class="thumb"><span class="tag">Daily Planner</span></div>
+          <div class="thumb"><span class="tag">Weekly Reset</span></div>
+          <div class="thumb"><span class="tag">Cleaning</span></div>
+          <div class="thumb"><span class="tag">Habit Tracker</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section id="how" class="section">
+      <div class="container how">
+        <div class="step"><b>1) Pick a base</b>Choose a template + colorway.</div>
+        <div class="step"><b>2) Personalize</b>Add sections (meals, macros, savings, skincare), drag to reorder.</div>
+        <div class="step"><b>3) Export & print</b>One-click PDF/PNG export at 300 DPI. Print at home or share to Pinterest.</div>
+      </div>
+    </section>
+
+    <!-- FREEBIE -->
+    <section id="free" class="section">
+      <div class="container cta-band">
+        <div class="row">
+          <div>
+            <h3 style="margin:0 0 6px">Free: 7-Day Glow-Up printable</h3>
+            <p class="fine" style="margin:0">A mini routine for meals • movement • self-care • wins. Instant download.</p>
+          </div>
+          <div style="display:flex; gap:10px; align-items:center">
+            <a class="btn" href="#" onclick="fakeDownload(event)">Download PDF</a>
+            <a class="btn ghost" href="#pricing">Unlock all templates</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOCIAL PROOF -->
+    <section class="section">
+      <div class="container social-proof">
+        <div class="quote">“Printed the Meal Plan + Budget set. It’s the first time I’ve stuck to both for 3 weeks.”<b>— Maya R.</b></div>
+        <div class="quote">“The layouts are clean, not cluttered. Love the neutral + blush themes.”<b>— Evelyn T.</b></div>
+        <div class="quote">“Exported to Pinterest and it actually got saves?? Instant content.”<b>— Kirsten L.</b></div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section id="pricing" class="section">
+      <div class="container pricing">
+        <div class="price">
+          <h3>Free</h3>
+          <div class="p-num">$0</div>
+          <ul>
+            <li>7-Day Glow-Up printable</li>
+            <li>2 starter templates</li>
+            <li>Basic colors</li>
+          </ul>
+          <div style="margin-top:12px"><a class="btn ghost" href="#free">Start free</a></div>
+        </div>
+        <div class="price best">
+          <div class="ribbon">Most Popular</div>
+          <h3>Pro</h3>
+          <div class="p-num">$7<span style="font-size:16px">/mo</span></div>
+          <ul>
+            <li>All templates + new drops</li>
+            <li>Unlimited exports (PDF/PNG, 300 DPI)</li>
+            <li>Theme packs: Blush • Neutral • Sky • Lilac</li>
+            <li>Priority requests & support</li>
+          </ul>
+          <div style="margin-top:12px"><a class="btn" href="#" onclick="toCheckout()">Go Pro</a></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="section">
+      <div class="container faq">
+        <details>
+          <summary>Can I use this with Pinterest?</summary>
+          <p>Yes. Export PNG at 1000×1500 or 1200×1800 and post as an Idea Pin or standard pin.</p>
+        </details>
+        <details>
+          <summary>Will it work for A4 / Letter?</summary>
+          <p>Exports are vector-sharp and sized for US Letter by default; switch to A4 in export.</p>
+        </details>
+        <details>
+          <summary>Is there a free trial?</summary>
+          <p>Grab the free 7-Day printable anytime. Pro can be cancelled anytime, no lock-in.</p>
+        </details>
+        <details>
+          <summary>Do I need design skills?</summary>
+          <p>No. Templates are pre-styled; you just toggle sections and rename headings.</p>
+        </details>
+      </div>
+    </section>
+
     <section class="section">
       <div class="container">
         <div class="cta-band">
           <div class="row">
-            <h3 class="tight">Ready to make routines stick?</h3>
+            <h3 style="margin:0">Ready to make routines stick?</h3>
             <div>
-              <button class="btn ghost" id="btnDownload2">Download Test PDF</button>
+              <a class="btn" href="#" onclick="toCheckout()">Get Pro for $7/mo</a>
+              <a class="btn ghost" href="#free">Try free first</a>
             </div>
           </div>
         </div>
@@ -129,155 +372,22 @@
   </main>
 
   <footer>
-    <div class="container foot">
+    <div class="container" style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap">
       <div class="brand"><div class="logo"></div><span>GlowPlanner</span></div>
       <div class="fine">© <span id="y"></span> GlowPlanner. Pretty planners, practical habits.</div>
     </div>
   </footer>
 
-  <!-- LOGIN MODAL -->
-  <div class="modal" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginTitle" aria-hidden="true">
-    <div class="modal-backdrop" data-close></div>
-    <div class="modal-panel" tabindex="-1">
-      <div class="modal-head">
-        <div class="brand">
-          <span class="brand-pill">GlowPlanner</span>
-          <span id="loginTitle">Sign in</span>
-        </div>
-        <button class="xbtn" title="Close" data-close aria-label="Close">✕</button>
-      </div>
-
-      <form id="loginForm" onsubmit="event.preventDefault()">
-        <div class="field">
-          <label for="email">Email</label>
-          <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required/>
-        </div>
-        <div class="field">
-          <label for="password">Password</label>
-          <input id="password" name="password" type="password" autocomplete="current-password" placeholder="••••••••" required/>
-        </div>
-
-        <div class="row" style="justify-content: space-between; margin: 6px 0 14px">
-          <label class="row" style="gap:8px; font-size:12px; color:#b8bde6">
-            <input type="checkbox" id="remember" style="accent-color:#7e8bff"/> Remember me
-          </label>
-          <a href="#" id="linkForgot" class="muted">Forgot?</a>
-        </div>
-
-        <button class="btn primary" id="btnEmailPw" style="width:100%">Continue</button>
-
-        <div class="hr"></div>
-        <button type="button" class="oauth" id="btnGoogle">Continue with Google</button>
-
-        <p class="legal">By continuing, you agree to our <a href="#">Terms</a> and <a href="#">Privacy</a>.</p>
-        <p class="muted" id="authNote" style="margin-top:8px;"></p>
-      </form>
-    </div>
-  </div>
-
   <script>
-    document.getElementById('y').textContent = new Date().getFullYear();
+    // Dummy hooks to make the page feel live in your preview.
+    const y = document.getElementById('y'); y.textContent = new Date().getFullYear();
 
-    // ===== Init Supabase from public envs =====
-    // window.ENV is provided by /api/env.js
-    const supabase = window.supabase.createClient(
-      window.ENV?.SUPABASE_URL || "",
-      window.ENV?.SUPABASE_ANON_KEY || "",
-      { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } }
-    );
-
-    // --- Elements
-    const loginModal = document.getElementById('loginModal');
-    const panel = loginModal.querySelector('.modal-panel');
-    const openBtn = document.getElementById('btnSignIn');
-    const closeEls = loginModal.querySelectorAll('[data-close]');
-    const emailEl = document.getElementById('email');
-    const pwEl = document.getElementById('password');
-    const note = document.getElementById('authNote');
-
-    // ===== Modal helpers
-    let lastFocus = null;
-    function openModal(){ lastFocus = document.activeElement; loginModal.classList.add('open'); loginModal.removeAttribute('aria-hidden'); setTimeout(()=>emailEl.focus(),0); }
-    function closeModal(){ loginModal.classList.remove('open'); loginModal.setAttribute('aria-hidden','true'); if(lastFocus) lastFocus.focus(); }
-    openBtn.addEventListener('click', openModal);
-    closeEls.forEach(el => el.addEventListener('click', closeModal));
-    loginModal.querySelector('.modal-backdrop').addEventListener('click', closeModal);
-    loginModal.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
-
-    // ===== Gated Download
-    let pendingDownload = false;  // if user clicks download while logged out
-    async function userIsAuthed(){
-      const { data: { session } } = await supabase.auth.getSession();
-      return !!session;
+    function fakeDownload(e){
+      e.preventDefault();
+      alert("This demo will generate the free PDF after you connect it to your backend.\n\nTip: Offer the freebie without email to maximize Pinterest conversions, then upsell Pro inside.");
     }
-    function startDownload(filename = 'glowplanner-fillable.pdf'){
-      const a = document.createElement('a');
-      a.href = '/pdfs/' + filename;
-      a.download = filename;
-      document.body.appendChild(a); a.click(); a.remove();
-    }
-    async function gatedDownload(){
-      if (await userIsAuthed()) {
-        startDownload();
-      } else {
-        pendingDownload = true;
-        openModal();
-      }
-    }
-    document.getElementById('btnDownload').addEventListener('click', gatedDownload);
-    document.getElementById('btnDownload2').addEventListener('click', gatedDownload);
-
-    // ===== Email + Password (sign-in or sign-up on first try)
-    document.getElementById('btnEmailPw').addEventListener('click', async () => {
-      note.textContent = 'Signing in...';
-      const email = emailEl.value.trim();
-      const password = pwEl.value;
-      if(!email || !password){ note.textContent = 'Enter your email and password.'; return; }
-
-      // Try sign-in
-      let { data, error } = await supabase.auth.signInWithPassword({ email, password });
-
-      // Auto sign-up on invalid credentials (first-time users)
-      if (error && /Invalid login credentials/i.test(error.message || '')) {
-        ({ data, error } = await supabase.auth.signUp({ email, password }));
-      }
-
-      if (error) { note.textContent = 'Error: ' + (error.message || 'Something went wrong.'); return; }
-
-      note.textContent = 'Success! You are signed in.';
-      setSignedInUI();
-      setTimeout(() => {
-        closeModal();
-        if (pendingDownload) { pendingDownload = false; startDownload(); }
-      }, 300);
-    });
-
-    // ===== Google OAuth
-    document.getElementById('btnGoogle').addEventListener('click', async () => {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: { redirectTo: window.location.origin }
-      });
-      if (error) note.textContent = 'Google sign-in error: ' + error.message;
-    });
-
-    // ===== Session on load
-    (async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) setSignedInUI();
-    })();
-
-    // ===== Swap nav button to Account when signed in (with sign-out)
-    function setSignedInUI(){
-      const btn = document.getElementById('btnSignIn');
-      btn.textContent = 'Account';
-      btn.onclick = async () => {
-        const choice = confirm('Sign out of GlowPlanner?');
-        if (!choice) return;
-        await supabase.auth.signOut();
-        btn.textContent = 'Sign In';
-        btn.onclick = openModal;
-      };
+    function toCheckout(){
+      alert("Hook this button to Stripe Checkout.\n\nPlan suggestion:\n• price_free (internal)\n• price_pro_monthly: $7/mo");
     }
   </script>
 </body>
