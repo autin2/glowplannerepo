@@ -12,10 +12,23 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="/api/env.js"></script>
 
-  <!-- Minimal modal styles -->
+  <!-- Minimal modal + header + mock styles -->
   <style>
     .btn.ghost{background:transparent;border:1px solid var(--border,#2a2f3f);color:#eaeefe}
     .btn.primary{background:var(--primary,#6c7bff);color:#fff}
+
+    /* Middle nav links in header */
+    .mid-links{
+      display:flex; gap:20px; align-items:center; justify-content:center;
+      flex:1; /* centers between brand and nav-cta */
+    }
+    .mid-link{
+      font-weight:500; color:var(--text,#eef1ff); text-decoration:none;
+      padding:6px 10px; border-radius:6px; transition:background .2s,color .2s;
+    }
+    .mid-link:hover{ background:rgba(255,255,255,.08); color:#fff }
+
+    /* Modal */
     .modal{position:fixed;inset:0;z-index:80;display:none}
     .modal.open{display:grid;place-items:center}
     .modal-backdrop{position:absolute;inset:0;background:rgba(10,12,22,.6);backdrop-filter:blur(4px)}
@@ -37,9 +50,15 @@
     .oauth:hover{background:#0e1326}
     .legal{font-size:11px;color:#9aa0c7;margin-top:8px}
     .legal a{color:#cbd1ff;text-decoration:underline}
-    /* Mock viewport so image fits the box nicely */
+
+    /* Mock viewport so image fits box — no grey background/shadow */
     .mock{position:relative;width:100%;max-width:420px;aspect-ratio:3/4.4;display:grid;place-items:center;overflow:visible;margin-inline:auto}
-    .mock-viewport{position:relative;width:100%;height:100%;border-radius:24px;overflow:hidden;background:#fff;box-shadow:0 18px 40px rgba(15,18,35,.35),0 2px 0 rgba(0,0,0,.06) inset}
+    .mock-viewport{
+      position:relative;width:100%;height:100%;
+      border-radius:24px; overflow:hidden;
+      background: transparent;            /* removed white background */
+      box-shadow: none;                    /* removed inset/outer grey shadow */
+    }
     .mock-img{width:100%;height:100%;object-fit:contain;object-position:center top;display:block;transform:translateY(2px)}
     .mock .sticker{position:absolute;top:-8px;right:12px;z-index:3;padding:8px 14px;border-radius:999px;background:linear-gradient(135deg,#ff7ac8,#ff66a8);color:#fff;font-weight:800;font-size:12px;letter-spacing:.2px;transform:rotate(6deg);box-shadow:0 10px 22px rgba(0,0,0,.22),0 1px 0 rgba(255,255,255,.6) inset;pointer-events:none}
     @media (min-width:1100px){.mock{max-width:520px}}
@@ -48,10 +67,20 @@
 <body>
   <header class="nav">
     <div class="container nav-inner">
+      <!-- Left: Brand -->
       <div class="brand">
         <div class="logo" aria-hidden="true"></div>
         <span>GlowPlanner</span>
       </div>
+
+      <!-- Middle: New nav links -->
+      <nav class="mid-links" aria-label="Main navigation">
+        <a href="/index.html" class="mid-link">Home</a>
+        <a href="/planners.html" class="mid-link">Planners</a>
+        <a href="/editor.html" class="mid-link">Editor</a>
+      </nav>
+
+      <!-- Right: Account / Sign in -->
       <div class="nav-cta" id="navCta">
         <!-- Will render Sign In or Account depending on session -->
         <button class="btn ghost" id="btnSignIn">Sign In</button>
@@ -280,7 +309,7 @@
     document.getElementById('btnGoogle').addEventListener('click', async () => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
-        options: { redirectTo: window.location.origin } // must be allowed in Supabase Auth settings
+        options: { redirectTo: window.location.origin } // allow this origin in Supabase Auth settings
       });
       if (error) note.textContent = 'Google sign-in error: ' + error.message;
     });
