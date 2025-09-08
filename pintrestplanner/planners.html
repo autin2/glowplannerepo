@@ -187,8 +187,7 @@
     }
 
     // Mock "plan" since Stripe isn't set up (force non-Pro)
-    // When you hook backend: fetch('/api/me') and set from response.
-    let CURRENT_PLAN = 'Free'; // Not Pro on purpose
+    let CURRENT_PLAN = 'Free';
     function isPro(){ return CURRENT_PLAN === 'Pro'; }
 
     // Catalog data (replace thumbs & files with your real assets)
@@ -205,17 +204,17 @@
 
     function cardTemplate(item){
       return `
-        <article class="card" data-key="${item.key}">
+        <article class="card" data-key="\${item.key}">
           <div class="thumb">
-            <img src="${item.thumb}" alt="${item.title} preview"/>
-            <span class="pill ${item.pro ? 'pro' : ''}">${item.pro ? 'Pro' : 'Free'}</span>
+            <img src="\${item.thumb}" alt="\${item.title} preview"/>
+            <span class="pill \${item.pro ? 'pro' : ''}">\${item.pro ? 'Pro' : 'Free'}</span>
           </div>
           <div class="body">
-            <div class="title">${item.title}</div>
-            <div class="desc">${item.desc}</div>
+            <div class="title">\${item.title}</div>
+            <div class="desc">\${item.desc}</div>
             <div class="row">
-              <span class="badge">${item.pro ? 'Members only' : 'Free'}</span>
-              <button class="btn" data-dl="${item.file}">Download</button>
+              \${item.pro ? '' : '<span class="badge">Free</span>'}
+              <button class="btn" data-dl="\${item.file}">Download</button>
             </div>
           </div>
         </article>
@@ -254,7 +253,7 @@
       document.body.appendChild(a); a.click(); a.remove();
     }
 
-    // Modal logic (same pattern as index)
+    // Modal logic
     const loginModal = document.getElementById('loginModal');
     const closeEls = loginModal.querySelectorAll('[data-close]');
     const emailEl = document.getElementById('email');
