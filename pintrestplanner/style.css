@@ -218,3 +218,25 @@ footer{padding:24px 0; color:var(--muted)}
 }
 
 
+
+.mid-links {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  flex: 1; /* pushes links into the middle */
+}
+
+.mid-link {
+  font-weight: 500;
+  color: var(--text, #eef1ff);
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: background .2s, color .2s;
+}
+
+.mid-link:hover {
+  background: rgba(255,255,255,.08);
+  color: #fff;
+}
