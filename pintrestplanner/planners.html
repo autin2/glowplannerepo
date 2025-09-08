@@ -184,9 +184,16 @@
     let CURRENT_PLAN = 'Free'; // update from backend later
     const isPro = () => CURRENT_PLAN === 'Pro';
 
-    // Catalog data (replace thumbs & files with your real assets)
+    // Catalog data
     const items = [
-      { key:'meal-plan',    title:'Meal Plan',       desc:'Plan breakfasts, lunches, dinners + grocery list.', pro:true, thumb:'/img/mock-glowplanner-v4.png', file:'/pdfs/meal-plan.pdf' },
+      {
+        key:'meal-plan',
+        title:'Meal Plan',
+        desc:'Plan breakfasts, lunches, dinners + grocery list.',
+        pro:true,
+        thumb:'/img/meal-plan-cover-900x1200.png',     // updated PNG cover
+        file:'/pdfs/WeeklyMealPlanFillable.pdf'        // updated PDF link
+      },
       { key:'fitness',      title:'Fitness',         desc:'Weekly workouts with sets, reps, and notes.',      pro:true, thumb:'/img/mock-glowplanner-v4.png', file:'/pdfs/fitness.pdf' },
       { key:'budget',       title:'Budget',          desc:'Monthly budget, savings, and expense tracker.',    pro:true, thumb:'/img/mock-glowplanner-v4.png', file:'/pdfs/budget.pdf' },
       { key:'self-care',    title:'Self-Care',       desc:'Routines for skin, sleep, relaxation, joy.',       pro:true, thumb:'/img/mock-glowplanner-v4.png', file:'/pdfs/self-care.pdf' },
@@ -252,7 +259,7 @@
       a.remove();
     }
 
-    // Modal logic (same pattern as index)
+    // Modal logic
     const loginModal = document.getElementById('loginModal');
     const closeEls = loginModal.querySelectorAll('[data-close]');
     const emailEl = document.getElementById('email');
